@@ -12,9 +12,9 @@
 		7302AD032BF55E2100057E21 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7302AD022BF55E2100057E21 /* ContentView.swift */; };
 		7302AD052BF55E2200057E21 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7302AD042BF55E2200057E21 /* Assets.xcassets */; };
 		7302AD082BF55E2200057E21 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7302AD072BF55E2200057E21 /* Preview Assets.xcassets */; };
-		7302AD122BF55E2300057E21 /* dumb_treadmill_Watch_AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7302AD112BF55E2300057E21 /* dumb_treadmill_Watch_AppTests.swift */; };
-		7302AD1C2BF55E2300057E21 /* dumb_treadmill_Watch_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7302AD1B2BF55E2300057E21 /* dumb_treadmill_Watch_AppUITests.swift */; };
-		7302AD1E2BF55E2300057E21 /* dumb_treadmill_Watch_AppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7302AD1D2BF55E2300057E21 /* dumb_treadmill_Watch_AppUITestsLaunchTests.swift */; };
+		7302AD332BF55FD900057E21 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7302AD322BF55FD900057E21 /* HealthKitManager.swift */; };
+		7302AD352BF5600E00057E21 /* HeartRateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7302AD342BF5600E00057E21 /* HeartRateManager.swift */; };
+		7302AD372BF5602500057E21 /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7302AD362BF5602500057E21 /* TimerManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,10 +63,11 @@
 		7302AD042BF55E2200057E21 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7302AD072BF55E2200057E21 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		7302AD0D2BF55E2300057E21 /* dumb_treadmill Watch AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "dumb_treadmill Watch AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7302AD112BF55E2300057E21 /* dumb_treadmill_Watch_AppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dumb_treadmill_Watch_AppTests.swift; sourceTree = "<group>"; };
 		7302AD172BF55E2300057E21 /* dumb_treadmill Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "dumb_treadmill Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7302AD1B2BF55E2300057E21 /* dumb_treadmill_Watch_AppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dumb_treadmill_Watch_AppUITests.swift; sourceTree = "<group>"; };
-		7302AD1D2BF55E2300057E21 /* dumb_treadmill_Watch_AppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dumb_treadmill_Watch_AppUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		7302AD322BF55FD900057E21 /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
+		7302AD342BF5600E00057E21 /* HeartRateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateManager.swift; sourceTree = "<group>"; };
+		7302AD362BF5602500057E21 /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
+		73E3FAD32BF5797D005F969D /* dumb_treadmill Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "dumb_treadmill Watch App.entitlements"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,9 +98,8 @@
 		7302ACEE2BF55E2100057E21 = {
 			isa = PBXGroup;
 			children = (
-				7302ACFF2BF55E2100057E21 /* dumb_treadmill Watch App */,
-				7302AD102BF55E2300057E21 /* dumb_treadmill Watch AppTests */,
-				7302AD1A2BF55E2300057E21 /* dumb_treadmill Watch AppUITests */,
+				73E3FAD32BF5797D005F969D /* dumb_treadmill Watch App.entitlements */,
+				7302ACFF2BF55E2100057E21 /* dumb_treadmill App */,
 				7302ACF62BF55E2100057E21 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -115,15 +115,18 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		7302ACFF2BF55E2100057E21 /* dumb_treadmill Watch App */ = {
+		7302ACFF2BF55E2100057E21 /* dumb_treadmill App */ = {
 			isa = PBXGroup;
 			children = (
 				7302AD002BF55E2100057E21 /* dumb_treadmillApp.swift */,
 				7302AD022BF55E2100057E21 /* ContentView.swift */,
 				7302AD042BF55E2200057E21 /* Assets.xcassets */,
 				7302AD062BF55E2200057E21 /* Preview Content */,
+				7302AD322BF55FD900057E21 /* HealthKitManager.swift */,
+				7302AD342BF5600E00057E21 /* HeartRateManager.swift */,
+				7302AD362BF5602500057E21 /* TimerManager.swift */,
 			);
-			path = "dumb_treadmill Watch App";
+			path = "dumb_treadmill App";
 			sourceTree = "<group>";
 		};
 		7302AD062BF55E2200057E21 /* Preview Content */ = {
@@ -132,23 +135,6 @@
 				7302AD072BF55E2200057E21 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		7302AD102BF55E2300057E21 /* dumb_treadmill Watch AppTests */ = {
-			isa = PBXGroup;
-			children = (
-				7302AD112BF55E2300057E21 /* dumb_treadmill_Watch_AppTests.swift */,
-			);
-			path = "dumb_treadmill Watch AppTests";
-			sourceTree = "<group>";
-		};
-		7302AD1A2BF55E2300057E21 /* dumb_treadmill Watch AppUITests */ = {
-			isa = PBXGroup;
-			children = (
-				7302AD1B2BF55E2300057E21 /* dumb_treadmill_Watch_AppUITests.swift */,
-				7302AD1D2BF55E2300057E21 /* dumb_treadmill_Watch_AppUITestsLaunchTests.swift */,
-			);
-			path = "dumb_treadmill Watch AppUITests";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -309,7 +295,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7302AD352BF5600E00057E21 /* HeartRateManager.swift in Sources */,
+				7302AD372BF5602500057E21 /* TimerManager.swift in Sources */,
 				7302AD032BF55E2100057E21 /* ContentView.swift in Sources */,
+				7302AD332BF55FD900057E21 /* HealthKitManager.swift in Sources */,
 				7302AD012BF55E2100057E21 /* dumb_treadmillApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -318,7 +307,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7302AD122BF55E2300057E21 /* dumb_treadmill_Watch_AppTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -326,8 +314,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7302AD1C2BF55E2300057E21 /* dumb_treadmill_Watch_AppUITests.swift in Sources */,
-				7302AD1E2BF55E2300057E21 /* dumb_treadmill_Watch_AppUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -404,6 +390,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "Your Description Here";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Your Description Here";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Your Description Here";
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -459,6 +448,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "Your Description Here";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Your Description Here";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Your Description Here";
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -471,9 +463,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "dumb_treadmill Watch App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"dumb_treadmill Watch App/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"dumb_treadmill App/Preview Content\"";
+				DEVELOPMENT_TEAM = 4RX59Q78V2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = dumb_treadmill;
@@ -500,9 +494,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "dumb_treadmill Watch App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"dumb_treadmill Watch App/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"dumb_treadmill App/Preview Content\"";
+				DEVELOPMENT_TEAM = 4RX59Q78V2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = dumb_treadmill;
@@ -536,7 +532,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "yoloindustries.dumb-treadmill";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -551,7 +550,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "yoloindustries.dumb-treadmill";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

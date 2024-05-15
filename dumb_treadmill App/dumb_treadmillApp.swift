@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct dumb_treadmill_Watch_AppApp: App {
+struct dumb_treadmill_App: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
