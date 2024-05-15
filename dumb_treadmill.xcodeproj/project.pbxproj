@@ -1,0 +1,690 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		7302ACFC2BF55E2100057E21 /* dumb_treadmill Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 7302ACFB2BF55E2100057E21 /* dumb_treadmill Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		7302AD012BF55E2100057E21 /* dumb_treadmillApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7302AD002BF55E2100057E21 /* dumb_treadmillApp.swift */; };
+		7302AD032BF55E2100057E21 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7302AD022BF55E2100057E21 /* ContentView.swift */; };
+		7302AD052BF55E2200057E21 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7302AD042BF55E2200057E21 /* Assets.xcassets */; };
+		7302AD082BF55E2200057E21 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7302AD072BF55E2200057E21 /* Preview Assets.xcassets */; };
+		7302AD122BF55E2300057E21 /* dumb_treadmill_Watch_AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7302AD112BF55E2300057E21 /* dumb_treadmill_Watch_AppTests.swift */; };
+		7302AD1C2BF55E2300057E21 /* dumb_treadmill_Watch_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7302AD1B2BF55E2300057E21 /* dumb_treadmill_Watch_AppUITests.swift */; };
+		7302AD1E2BF55E2300057E21 /* dumb_treadmill_Watch_AppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7302AD1D2BF55E2300057E21 /* dumb_treadmill_Watch_AppUITestsLaunchTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		7302ACFD2BF55E2100057E21 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7302ACEF2BF55E2100057E21 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7302ACFA2BF55E2100057E21;
+			remoteInfo = "dumb_treadmill Watch App";
+		};
+		7302AD0E2BF55E2300057E21 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7302ACEF2BF55E2100057E21 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7302ACFA2BF55E2100057E21;
+			remoteInfo = "dumb_treadmill Watch App";
+		};
+		7302AD182BF55E2300057E21 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7302ACEF2BF55E2100057E21 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7302ACFA2BF55E2100057E21;
+			remoteInfo = "dumb_treadmill Watch App";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		7302AD242BF55E2300057E21 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				7302ACFC2BF55E2100057E21 /* dumb_treadmill Watch App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		7302ACF52BF55E2100057E21 /* dumb_treadmill.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dumb_treadmill.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7302ACFB2BF55E2100057E21 /* dumb_treadmill Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "dumb_treadmill Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7302AD002BF55E2100057E21 /* dumb_treadmillApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dumb_treadmillApp.swift; sourceTree = "<group>"; };
+		7302AD022BF55E2100057E21 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		7302AD042BF55E2200057E21 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7302AD072BF55E2200057E21 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		7302AD0D2BF55E2300057E21 /* dumb_treadmill Watch AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "dumb_treadmill Watch AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7302AD112BF55E2300057E21 /* dumb_treadmill_Watch_AppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dumb_treadmill_Watch_AppTests.swift; sourceTree = "<group>"; };
+		7302AD172BF55E2300057E21 /* dumb_treadmill Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "dumb_treadmill Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7302AD1B2BF55E2300057E21 /* dumb_treadmill_Watch_AppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dumb_treadmill_Watch_AppUITests.swift; sourceTree = "<group>"; };
+		7302AD1D2BF55E2300057E21 /* dumb_treadmill_Watch_AppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dumb_treadmill_Watch_AppUITestsLaunchTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		7302ACF82BF55E2100057E21 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7302AD0A2BF55E2300057E21 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7302AD142BF55E2300057E21 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		7302ACEE2BF55E2100057E21 = {
+			isa = PBXGroup;
+			children = (
+				7302ACFF2BF55E2100057E21 /* dumb_treadmill Watch App */,
+				7302AD102BF55E2300057E21 /* dumb_treadmill Watch AppTests */,
+				7302AD1A2BF55E2300057E21 /* dumb_treadmill Watch AppUITests */,
+				7302ACF62BF55E2100057E21 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		7302ACF62BF55E2100057E21 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7302ACF52BF55E2100057E21 /* dumb_treadmill.app */,
+				7302ACFB2BF55E2100057E21 /* dumb_treadmill Watch App.app */,
+				7302AD0D2BF55E2300057E21 /* dumb_treadmill Watch AppTests.xctest */,
+				7302AD172BF55E2300057E21 /* dumb_treadmill Watch AppUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7302ACFF2BF55E2100057E21 /* dumb_treadmill Watch App */ = {
+			isa = PBXGroup;
+			children = (
+				7302AD002BF55E2100057E21 /* dumb_treadmillApp.swift */,
+				7302AD022BF55E2100057E21 /* ContentView.swift */,
+				7302AD042BF55E2200057E21 /* Assets.xcassets */,
+				7302AD062BF55E2200057E21 /* Preview Content */,
+			);
+			path = "dumb_treadmill Watch App";
+			sourceTree = "<group>";
+		};
+		7302AD062BF55E2200057E21 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				7302AD072BF55E2200057E21 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		7302AD102BF55E2300057E21 /* dumb_treadmill Watch AppTests */ = {
+			isa = PBXGroup;
+			children = (
+				7302AD112BF55E2300057E21 /* dumb_treadmill_Watch_AppTests.swift */,
+			);
+			path = "dumb_treadmill Watch AppTests";
+			sourceTree = "<group>";
+		};
+		7302AD1A2BF55E2300057E21 /* dumb_treadmill Watch AppUITests */ = {
+			isa = PBXGroup;
+			children = (
+				7302AD1B2BF55E2300057E21 /* dumb_treadmill_Watch_AppUITests.swift */,
+				7302AD1D2BF55E2300057E21 /* dumb_treadmill_Watch_AppUITestsLaunchTests.swift */,
+			);
+			path = "dumb_treadmill Watch AppUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		7302ACF42BF55E2100057E21 /* dumb_treadmill */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7302AD252BF55E2300057E21 /* Build configuration list for PBXNativeTarget "dumb_treadmill" */;
+			buildPhases = (
+				7302ACF32BF55E2100057E21 /* Resources */,
+				7302AD242BF55E2300057E21 /* Embed Watch Content */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7302ACFE2BF55E2100057E21 /* PBXTargetDependency */,
+			);
+			name = dumb_treadmill;
+			productName = dumb_treadmill;
+			productReference = 7302ACF52BF55E2100057E21 /* dumb_treadmill.app */;
+			productType = "com.apple.product-type.application.watchapp2-container";
+		};
+		7302ACFA2BF55E2100057E21 /* dumb_treadmill Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7302AD212BF55E2300057E21 /* Build configuration list for PBXNativeTarget "dumb_treadmill Watch App" */;
+			buildPhases = (
+				7302ACF72BF55E2100057E21 /* Sources */,
+				7302ACF82BF55E2100057E21 /* Frameworks */,
+				7302ACF92BF55E2100057E21 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "dumb_treadmill Watch App";
+			productName = "dumb_treadmill Watch App";
+			productReference = 7302ACFB2BF55E2100057E21 /* dumb_treadmill Watch App.app */;
+			productType = "com.apple.product-type.application";
+		};
+		7302AD0C2BF55E2300057E21 /* dumb_treadmill Watch AppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7302AD282BF55E2300057E21 /* Build configuration list for PBXNativeTarget "dumb_treadmill Watch AppTests" */;
+			buildPhases = (
+				7302AD092BF55E2300057E21 /* Sources */,
+				7302AD0A2BF55E2300057E21 /* Frameworks */,
+				7302AD0B2BF55E2300057E21 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7302AD0F2BF55E2300057E21 /* PBXTargetDependency */,
+			);
+			name = "dumb_treadmill Watch AppTests";
+			productName = "dumb_treadmill Watch AppTests";
+			productReference = 7302AD0D2BF55E2300057E21 /* dumb_treadmill Watch AppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		7302AD162BF55E2300057E21 /* dumb_treadmill Watch AppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7302AD2B2BF55E2300057E21 /* Build configuration list for PBXNativeTarget "dumb_treadmill Watch AppUITests" */;
+			buildPhases = (
+				7302AD132BF55E2300057E21 /* Sources */,
+				7302AD142BF55E2300057E21 /* Frameworks */,
+				7302AD152BF55E2300057E21 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7302AD192BF55E2300057E21 /* PBXTargetDependency */,
+			);
+			name = "dumb_treadmill Watch AppUITests";
+			productName = "dumb_treadmill Watch AppUITests";
+			productReference = 7302AD172BF55E2300057E21 /* dumb_treadmill Watch AppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		7302ACEF2BF55E2100057E21 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					7302ACF42BF55E2100057E21 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					7302ACFA2BF55E2100057E21 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					7302AD0C2BF55E2300057E21 = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = 7302ACFA2BF55E2100057E21;
+					};
+					7302AD162BF55E2300057E21 = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = 7302ACFA2BF55E2100057E21;
+					};
+				};
+			};
+			buildConfigurationList = 7302ACF22BF55E2100057E21 /* Build configuration list for PBXProject "dumb_treadmill" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 7302ACEE2BF55E2100057E21;
+			productRefGroup = 7302ACF62BF55E2100057E21 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7302ACF42BF55E2100057E21 /* dumb_treadmill */,
+				7302ACFA2BF55E2100057E21 /* dumb_treadmill Watch App */,
+				7302AD0C2BF55E2300057E21 /* dumb_treadmill Watch AppTests */,
+				7302AD162BF55E2300057E21 /* dumb_treadmill Watch AppUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7302ACF32BF55E2100057E21 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7302ACF92BF55E2100057E21 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7302AD082BF55E2200057E21 /* Preview Assets.xcassets in Resources */,
+				7302AD052BF55E2200057E21 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7302AD0B2BF55E2300057E21 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7302AD152BF55E2300057E21 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7302ACF72BF55E2100057E21 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7302AD032BF55E2100057E21 /* ContentView.swift in Sources */,
+				7302AD012BF55E2100057E21 /* dumb_treadmillApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7302AD092BF55E2300057E21 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7302AD122BF55E2300057E21 /* dumb_treadmill_Watch_AppTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7302AD132BF55E2300057E21 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7302AD1C2BF55E2300057E21 /* dumb_treadmill_Watch_AppUITests.swift in Sources */,
+				7302AD1E2BF55E2300057E21 /* dumb_treadmill_Watch_AppUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7302ACFE2BF55E2100057E21 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7302ACFA2BF55E2100057E21 /* dumb_treadmill Watch App */;
+			targetProxy = 7302ACFD2BF55E2100057E21 /* PBXContainerItemProxy */;
+		};
+		7302AD0F2BF55E2300057E21 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7302ACFA2BF55E2100057E21 /* dumb_treadmill Watch App */;
+			targetProxy = 7302AD0E2BF55E2300057E21 /* PBXContainerItemProxy */;
+		};
+		7302AD192BF55E2300057E21 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7302ACFA2BF55E2100057E21 /* dumb_treadmill Watch App */;
+			targetProxy = 7302AD182BF55E2300057E21 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		7302AD1F2BF55E2300057E21 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		7302AD202BF55E2300057E21 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		7302AD222BF55E2300057E21 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"dumb_treadmill Watch App/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = dumb_treadmill;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKWatchOnly = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "yoloindustries.dumb-treadmill.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.5;
+			};
+			name = Debug;
+		};
+		7302AD232BF55E2300057E21 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"dumb_treadmill Watch App/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = dumb_treadmill;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKWatchOnly = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "yoloindustries.dumb-treadmill.watchkitapp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 10.5;
+			};
+			name = Release;
+		};
+		7302AD262BF55E2300057E21 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_KEY_CFBundleDisplayName = dumb_treadmill;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "yoloindustries.dumb-treadmill";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		7302AD272BF55E2300057E21 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_KEY_CFBundleDisplayName = dumb_treadmill;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "yoloindustries.dumb-treadmill";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		7302AD292BF55E2300057E21 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "yoloindustries.dumb-treadmill-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/dumb_treadmill Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/dumb_treadmill Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 10.5;
+			};
+			name = Debug;
+		};
+		7302AD2A2BF55E2300057E21 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "yoloindustries.dumb-treadmill-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/dumb_treadmill Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/dumb_treadmill Watch App";
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 10.5;
+			};
+			name = Release;
+		};
+		7302AD2C2BF55E2300057E21 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "yoloindustries.dumb-treadmill-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "dumb_treadmill Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 10.5;
+			};
+			name = Debug;
+		};
+		7302AD2D2BF55E2300057E21 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "yoloindustries.dumb-treadmill-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "dumb_treadmill Watch App";
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 10.5;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7302ACF22BF55E2100057E21 /* Build configuration list for PBXProject "dumb_treadmill" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7302AD1F2BF55E2300057E21 /* Debug */,
+				7302AD202BF55E2300057E21 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7302AD212BF55E2300057E21 /* Build configuration list for PBXNativeTarget "dumb_treadmill Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7302AD222BF55E2300057E21 /* Debug */,
+				7302AD232BF55E2300057E21 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7302AD252BF55E2300057E21 /* Build configuration list for PBXNativeTarget "dumb_treadmill" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7302AD262BF55E2300057E21 /* Debug */,
+				7302AD272BF55E2300057E21 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7302AD282BF55E2300057E21 /* Build configuration list for PBXNativeTarget "dumb_treadmill Watch AppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7302AD292BF55E2300057E21 /* Debug */,
+				7302AD2A2BF55E2300057E21 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7302AD2B2BF55E2300057E21 /* Build configuration list for PBXNativeTarget "dumb_treadmill Watch AppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7302AD2C2BF55E2300057E21 /* Debug */,
+				7302AD2D2BF55E2300057E21 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 7302ACEF2BF55E2100057E21 /* Project object */;
+}
