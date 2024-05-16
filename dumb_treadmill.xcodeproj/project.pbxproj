@@ -15,6 +15,9 @@
 		7302AD332BF55FD900057E21 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7302AD322BF55FD900057E21 /* HealthKitManager.swift */; };
 		7302AD352BF5600E00057E21 /* HeartRateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7302AD342BF5600E00057E21 /* HeartRateManager.swift */; };
 		7302AD372BF5602500057E21 /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7302AD362BF5602500057E21 /* TimerManager.swift */; };
+		73E3FAD52BF69E51005F969D /* PreStartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E3FAD42BF69E51005F969D /* PreStartView.swift */; };
+		73E3FAD72BF69E69005F969D /* DuringWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E3FAD62BF69E69005F969D /* DuringWorkoutView.swift */; };
+		73E3FAD92BF69E7A005F969D /* PausedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E3FAD82BF69E7A005F969D /* PausedView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +71,9 @@
 		7302AD342BF5600E00057E21 /* HeartRateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateManager.swift; sourceTree = "<group>"; };
 		7302AD362BF5602500057E21 /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
 		73E3FAD32BF5797D005F969D /* dumb_treadmill Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "dumb_treadmill Watch App.entitlements"; sourceTree = "<group>"; };
+		73E3FAD42BF69E51005F969D /* PreStartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreStartView.swift; sourceTree = "<group>"; };
+		73E3FAD62BF69E69005F969D /* DuringWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuringWorkoutView.swift; sourceTree = "<group>"; };
+		73E3FAD82BF69E7A005F969D /* PausedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PausedView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +131,9 @@
 				7302AD322BF55FD900057E21 /* HealthKitManager.swift */,
 				7302AD342BF5600E00057E21 /* HeartRateManager.swift */,
 				7302AD362BF5602500057E21 /* TimerManager.swift */,
+				73E3FAD42BF69E51005F969D /* PreStartView.swift */,
+				73E3FAD62BF69E69005F969D /* DuringWorkoutView.swift */,
+				73E3FAD82BF69E7A005F969D /* PausedView.swift */,
 			);
 			path = "dumb_treadmill App";
 			sourceTree = "<group>";
@@ -295,9 +304,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				73E3FAD92BF69E7A005F969D /* PausedView.swift in Sources */,
 				7302AD352BF5600E00057E21 /* HeartRateManager.swift in Sources */,
+				73E3FAD52BF69E51005F969D /* PreStartView.swift in Sources */,
 				7302AD372BF5602500057E21 /* TimerManager.swift in Sources */,
 				7302AD032BF55E2100057E21 /* ContentView.swift in Sources */,
+				73E3FAD72BF69E69005F969D /* DuringWorkoutView.swift in Sources */,
 				7302AD332BF55FD900057E21 /* HealthKitManager.swift in Sources */,
 				7302AD012BF55E2100057E21 /* dumb_treadmillApp.swift in Sources */,
 			);
