@@ -1,0 +1,37 @@
+{
+  "configurations" : [
+    {
+      "id" : "4B63D879-AF23-4E03-B022-7A8EE746A6B7",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:dumb_treadmill.xcodeproj",
+      "identifier" : "7302ACFA2BF55E2100057E21",
+      "name" : "dumb_treadmill Watch App"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:dumb_treadmill.xcodeproj",
+        "identifier" : "7302AD0C2BF55E2300057E21",
+        "name" : "dumb_treadmill Watch AppTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:dumb_treadmill.xcodeproj",
+        "identifier" : "7302AD162BF55E2300057E21",
+        "name" : "dumb_treadmill Watch AppUITests"
+      }
+    }
+  ],
+  "version" : 1
+}
