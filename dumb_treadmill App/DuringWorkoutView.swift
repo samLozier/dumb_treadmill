@@ -5,22 +5,20 @@ struct DuringWorkoutView: View {
     @Binding var pace: Double
     @Binding var heartRate: Double
     @Binding var isTracking: Bool
-    @ObservedObject private var timerManager = TimerManager()
-    @ObservedObject private var heartRateManager = HeartRateManager()
-    private let healthKitManager = HealthKitManager()
+    @Binding var showPausedView: Bool // Accept the binding for showPausedView
+    @ObservedObject var timerManager: TimerManager
+    @ObservedObject var heartRateManager: HeartRateManager
     
     var body: some View {
         VStack {
             Text("Workout in Progress")
             
             Text("Heart Rate: \(heartRate, specifier: "%.0f") bpm")
-            Text("Elapsed Time: \(timerManager.elapsedTime)")
+            Text("Elapsed Time: \(timerManager.elapsedTime.formattedTime())")
             Text("Distance: \(distanceTraveled(), specifier: "%.2f") miles")
             
             Button(action: {
-                timerManager.stop()
-                heartRateManager.stopHeartRateQuery()
-                isTracking = false
+                pauseWorkout()
             }) {
                 Text("Pause")
             }
@@ -28,20 +26,24 @@ struct DuringWorkoutView: View {
         }
         .padding()
         .onAppear {
-            timerManager.start()
-            heartRateManager.startHeartRateQuery()
+            startWorkout()
         }
         .onReceive(heartRateManager.$heartRate) { rate in
             self.heartRate = rate
         }
-        .background(
-            NavigationLink(destination: PausedView(pace: $pace, isTracking: $isTracking, timerManager: timerManager, heartRateManager: heartRateManager), isActive: Binding(
-                get: { !isTracking },
-                set: { if $0 { isTracking = false } }
-            )) {
-                EmptyView()
-            }
-        )
+    }
+    
+    private func startWorkout() {
+        timerManager.start()
+        heartRateManager.startHeartRateQuery()
+        isTracking = true
+    }
+
+    private func pauseWorkout() {
+        timerManager.stop()
+        heartRateManager.stopHeartRateQuery()
+        isTracking = false
+        showPausedView = true // Trigger navigation
     }
     
     private func distanceTraveled() -> Double {

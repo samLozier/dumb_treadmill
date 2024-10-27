@@ -4,24 +4,22 @@ import Combine
 
 class TimerManager: ObservableObject {
     @Published var elapsedTime: TimeInterval = 0
-    private var timer: DispatchSourceTimer?
+    private var timer: AnyCancellable?
     
     func start() {
-        elapsedTime = 0 // Reset elapsed time on start
+        // Invalidate any existing timer
+        timer?.cancel()
         
-        timer?.cancel() // Cancel any existing timer
-        timer = DispatchSource.makeTimerSource(queue: DispatchQueue.main)
-        
-        timer?.schedule(deadline: .now(), repeating: 1.0)
-        timer?.setEventHandler { [weak self] in
-            self?.elapsedTime += 1
-        }
-        
-        timer?.resume()
+        // Create a new timer that updates every second
+        timer = Timer.publish(every: 1, on: .main, in: .common)
+            .autoconnect()
+            .sink { [weak self] _ in
+                self?.elapsedTime += 1
+            }
     }
     
     func stop() {
+        // Stop the timer
         timer?.cancel()
-        timer = nil
     }
 }

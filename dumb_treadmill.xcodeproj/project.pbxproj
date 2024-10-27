@@ -15,6 +15,7 @@
 		7302AD332BF55FD900057E21 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7302AD322BF55FD900057E21 /* HealthKitManager.swift */; };
 		7302AD352BF5600E00057E21 /* HeartRateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7302AD342BF5600E00057E21 /* HeartRateManager.swift */; };
 		7302AD372BF5602500057E21 /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7302AD362BF5602500057E21 /* TimerManager.swift */; };
+		73034F632CCEE35500695DAA /* TimeInterval+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73034F622CCEE33200695DAA /* TimeInterval+Extensions.swift */; };
 		73E3FAD52BF69E51005F969D /* PreStartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E3FAD42BF69E51005F969D /* PreStartView.swift */; };
 		73E3FAD72BF69E69005F969D /* DuringWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E3FAD62BF69E69005F969D /* DuringWorkoutView.swift */; };
 		73E3FAD92BF69E7A005F969D /* PausedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73E3FAD82BF69E7A005F969D /* PausedView.swift */; };
@@ -70,10 +71,12 @@
 		7302AD322BF55FD900057E21 /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
 		7302AD342BF5600E00057E21 /* HeartRateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateManager.swift; sourceTree = "<group>"; };
 		7302AD362BF5602500057E21 /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
+		73034F622CCEE33200695DAA /* TimeInterval+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+Extensions.swift"; sourceTree = "<group>"; };
 		73E3FAD32BF5797D005F969D /* dumb_treadmill Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "dumb_treadmill Watch App.entitlements"; sourceTree = "<group>"; };
 		73E3FAD42BF69E51005F969D /* PreStartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreStartView.swift; sourceTree = "<group>"; };
 		73E3FAD62BF69E69005F969D /* DuringWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuringWorkoutView.swift; sourceTree = "<group>"; };
 		73E3FAD82BF69E7A005F969D /* PausedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PausedView.swift; sourceTree = "<group>"; };
+		73EFE7202CC6C2CC000CCF16 /* dumb_treadmill Watch App.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = "dumb_treadmill Watch App.xctestplan"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +107,7 @@
 		7302ACEE2BF55E2100057E21 = {
 			isa = PBXGroup;
 			children = (
+				73EFE7202CC6C2CC000CCF16 /* dumb_treadmill Watch App.xctestplan */,
 				73E3FAD32BF5797D005F969D /* dumb_treadmill Watch App.entitlements */,
 				7302ACFF2BF55E2100057E21 /* dumb_treadmill App */,
 				7302ACF62BF55E2100057E21 /* Products */,
@@ -124,6 +128,7 @@
 		7302ACFF2BF55E2100057E21 /* dumb_treadmill App */ = {
 			isa = PBXGroup;
 			children = (
+				73034F622CCEE33200695DAA /* TimeInterval+Extensions.swift */,
 				7302AD002BF55E2100057E21 /* dumb_treadmillApp.swift */,
 				7302AD022BF55E2100057E21 /* ContentView.swift */,
 				7302AD042BF55E2200057E21 /* Assets.xcassets */,
@@ -227,7 +232,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1540;
-				LastUpgradeCheck = 1540;
+				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					7302ACF42BF55E2100057E21 = {
 						CreatedOnToolsVersion = 15.4;
@@ -311,6 +316,7 @@
 				7302AD032BF55E2100057E21 /* ContentView.swift in Sources */,
 				73E3FAD72BF69E69005F969D /* DuringWorkoutView.swift in Sources */,
 				7302AD332BF55FD900057E21 /* HealthKitManager.swift in Sources */,
+				73034F632CCEE35500695DAA /* TimeInterval+Extensions.swift in Sources */,
 				7302AD012BF55E2100057E21 /* dumb_treadmillApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -384,6 +390,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -448,6 +455,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -536,7 +544,6 @@
 		7302AD262BF55E2300057E21 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_KEY_CFBundleDisplayName = dumb_treadmill;
@@ -554,7 +561,6 @@
 		7302AD272BF55E2300057E21 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_KEY_CFBundleDisplayName = dumb_treadmill;
@@ -573,7 +579,6 @@
 		7302AD292BF55E2300057E21 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -593,7 +598,6 @@
 		7302AD2A2BF55E2300057E21 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -614,7 +618,6 @@
 		7302AD2C2BF55E2300057E21 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -633,7 +636,6 @@
 		7302AD2D2BF55E2300057E21 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;

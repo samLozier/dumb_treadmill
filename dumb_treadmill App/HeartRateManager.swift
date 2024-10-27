@@ -8,6 +8,19 @@ class HeartRateManager: ObservableObject {
     private var heartRateQuery: HKAnchoredObjectQuery?
     private var timer: Timer?
     
+    init() {
+        requestAuthorization() // Ensure authorization on init
+    }
+    
+    private func requestAuthorization() {
+        let heartRateType = HKObjectType.quantityType(forIdentifier: .heartRate)!
+        healthStore.requestAuthorization(toShare: nil, read: [heartRateType]) { (success, error) in
+            if !success {
+                print("HealthKit authorization failed: \(String(describing: error))")
+            }
+        }
+    }
+    
     func startHeartRateQuery() {
         #if targetEnvironment(simulator)
         // Simulate heart rate data in the simulator
@@ -21,12 +34,20 @@ class HeartRateManager: ObservableObject {
         let heartRateType = HKObjectType.quantityType(forIdentifier: .heartRate)!
         let predicate = HKQuery.predicateForSamples(withStart: Date(), end: nil, options: .strictStartDate)
         
-        heartRateQuery = HKAnchoredObjectQuery(type: heartRateType, predicate: predicate, anchor: nil, limit: HKObjectQueryNoLimit) { query, samples, deletedObjects, newAnchor, error in
-            self.updateHeartRate(samples)
+        heartRateQuery = HKAnchoredObjectQuery(type: heartRateType, predicate: predicate, anchor: nil, limit: HKObjectQueryNoLimit) { [weak self] query, samples, deletedObjects, newAnchor, error in
+            if let error = error {
+                print("Heart rate query error: \(error.localizedDescription)")
+                return
+            }
+            self?.updateHeartRate(samples)
         }
         
-        heartRateQuery?.updateHandler = { query, samples, deletedObjects, newAnchor, error in
-            self.updateHeartRate(samples)
+        heartRateQuery?.updateHandler = { [weak self] query, samples, deletedObjects, newAnchor, error in
+            if let error = error {
+                print("Heart rate query update error: \(error.localizedDescription)")
+                return
+            }
+            self?.updateHeartRate(samples)
         }
         
         if let query = heartRateQuery {
@@ -42,6 +63,7 @@ class HeartRateManager: ObservableObject {
         #else
         if let query = heartRateQuery {
             healthStore.stop(query)
+            heartRateQuery = nil
         }
         #endif
     }
