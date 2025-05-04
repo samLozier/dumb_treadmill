@@ -4,24 +4,22 @@ import Combine
 
 class HeartRateManager: ObservableObject {
     @Published var heartRate: Double = 0.0
-    private var healthStore = HKHealthStore()
-    private var heartRateQuery: HKAnchoredObjectQuery?
-    private var timer: Timer?
+    private let healthStore = HKHealthStore() // HealthKit store
+    private var heartRateQuery: HKAnchoredObjectQuery? // Heart rate query
+    private var timer: Timer? // Timer for simulator data
+    private var healthKitManager: HealthKitManager // HealthKit manager instance
     
-    init() {
-        requestAuthorization() // Ensure authorization on init
+    init(healthKitManager: HealthKitManager) {
+        self.healthKitManager = healthKitManager
     }
     
-    private func requestAuthorization() {
-        let heartRateType = HKObjectType.quantityType(forIdentifier: .heartRate)!
-        healthStore.requestAuthorization(toShare: nil, read: [heartRateType]) { (success, error) in
-            if !success {
-                print("HealthKit authorization failed: \(String(describing: error))")
-            }
-        }
-    }
-    
+    // Start heart rate query if HealthKit is authorized
     func startHeartRateQuery() {
+        guard healthKitManager.isAuthorized else {
+            print("HealthKit not authorized for heart rate data.")
+            return
+        }
+        
         #if targetEnvironment(simulator)
         // Simulate heart rate data in the simulator
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
@@ -70,11 +68,15 @@ class HeartRateManager: ObservableObject {
     
     private func updateHeartRate(_ samples: [HKSample]?) {
         guard let heartRateSamples = samples as? [HKQuantitySample] else { return }
-        
+
         DispatchQueue.main.async {
-            if let sample = heartRateSamples.first {
-                self.heartRate = sample.quantity.doubleValue(for: HKUnit(from: "count/min"))
+            if let mostRecent = heartRateSamples.max(by: { $0.endDate < $1.endDate }) {
+                self.heartRate = mostRecent.quantity.doubleValue(for: HKUnit(from: "count/min"))
             }
         }
+    }
+
+    deinit {
+        stopHeartRateQuery()
     }
 }

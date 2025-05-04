@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1600"
+   LastUpgradeVersion = "1630"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -15,7 +15,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "7302ACFA2BF55E2100057E21"
+               BlueprintIdentifier = "7300B0F32DC56D9E004CF453"
                BuildableName = "dumb_treadmill Watch App.app"
                BlueprintName = "dumb_treadmill Watch App"
                ReferencedContainer = "container:dumb_treadmill.xcodeproj">
@@ -29,7 +29,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "7302ACF42BF55E2100057E21"
+               BlueprintIdentifier = "7300B0EE2DC56D9E004CF453"
                BuildableName = "dumb_treadmill.app"
                BlueprintName = "dumb_treadmill"
                ReferencedContainer = "container:dumb_treadmill.xcodeproj">
@@ -71,6 +71,28 @@
                ReferencedContainer = "container:dumb_treadmill.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "7300B1022DC56D9F004CF453"
+               BuildableName = "dumb_treadmill Watch AppTests.xctest"
+               BlueprintName = "dumb_treadmill Watch AppTests"
+               ReferencedContainer = "container:dumb_treadmill.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "7300B10C2DC56D9F004CF453"
+               BuildableName = "dumb_treadmill Watch AppUITests.xctest"
+               BlueprintName = "dumb_treadmill Watch AppUITests"
+               ReferencedContainer = "container:dumb_treadmill.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -87,7 +109,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "7302ACFA2BF55E2100057E21"
+            BlueprintIdentifier = "7300B0F32DC56D9E004CF453"
             BuildableName = "dumb_treadmill Watch App.app"
             BlueprintName = "dumb_treadmill Watch App"
             ReferencedContainer = "container:dumb_treadmill.xcodeproj">
@@ -104,7 +126,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "7302ACFA2BF55E2100057E21"
+            BlueprintIdentifier = "7300B0F32DC56D9E004CF453"
             BuildableName = "dumb_treadmill Watch App.app"
             BlueprintName = "dumb_treadmill Watch App"
             ReferencedContainer = "container:dumb_treadmill.xcodeproj">
