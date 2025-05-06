@@ -58,32 +58,14 @@ class WorkoutManager: ObservableObject {
             return
         }
 
-        let healthStore = healthKitManager.getHealthStore()
-
-        let readTypes: Set = [
-            HKObjectType.quantityType(forIdentifier: .heartRate)!,
-            HKObjectType.workoutType()
-        ]
-
-        let writeTypes: Set = [
-            HKObjectType.quantityType(forIdentifier: .heartRate)!,
-            HKObjectType.workoutType(),
-            HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!,
-            HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
-        ]
-
-        healthStore.requestAuthorization(toShare: writeTypes, read: readTypes) { success, error in
+        healthKitManager.requestAuthorization { success in
             DispatchQueue.main.async {
-                if let error = error {
-                    print("HealthKit authorization error: \(error.localizedDescription)")
-                    self.healthKitAvailable = false
-                } else if success == true {
+                self.healthKitAvailable = success
+                if success {
                     print("HealthKit authorization granted.")
-                    self.healthKitAvailable = true
                     self.onHealthKitAuthorized()
                 } else {
-                    print("HealthKit authorization not granted.")
-                    self.healthKitAvailable = false
+                    print("HealthKit authorization failed or not granted.")
                 }
             }
         }

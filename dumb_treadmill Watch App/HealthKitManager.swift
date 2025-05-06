@@ -8,9 +8,10 @@ class HealthKitManager: NSObject, ObservableObject {
     @Published var isAuthorized = false
 
     // Request authorization to read and write HealthKit data
-    func requestAuthorization() {
+    func requestAuthorization(completion: @escaping (Bool) -> Void) {
         guard HKHealthStore.isHealthDataAvailable() else {
             print("Health data is not available on this device.")
+            completion(false)
             return
         }
 
@@ -24,6 +25,7 @@ class HealthKitManager: NSObject, ObservableObject {
                 if let error = error {
                     print("HealthKit authorization error: \(error.localizedDescription)")
                     self.isAuthorized = false
+                    completion(false)
                     return
                 }
 
@@ -42,6 +44,8 @@ class HealthKitManager: NSObject, ObservableObject {
                 } else {
                     print("HealthKit not fully authorized. HeartRate (read or share): \(isHeartRateAuthorized), Workout: \(isWorkoutAuthorized)")
                 }
+
+                completion(self.isAuthorized)
             }
         }
     }

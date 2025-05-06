@@ -4,7 +4,6 @@ import Combine
 
 class HeartRateManager: ObservableObject {
     @Published var heartRate: Double = 0.0
-    private let healthStore = HKHealthStore() // HealthKit store
     private var heartRateQuery: HKAnchoredObjectQuery? // Heart rate query
     private var timer: Timer? // Timer for simulator data
     private var healthKitManager: HealthKitManager // HealthKit manager instance
@@ -50,7 +49,7 @@ class HeartRateManager: ObservableObject {
         }
         
         if let query = heartRateQuery {
-            healthStore.execute(query)
+            healthKitManager.getHealthStore().execute(query)
         }
         #endif
     }
@@ -61,7 +60,7 @@ class HeartRateManager: ObservableObject {
         timer = nil
         #else
         if let query = heartRateQuery {
-            healthStore.stop(query)
+            healthKitManager.getHealthStore().stop(query)
             heartRateQuery = nil
         }
         #endif
