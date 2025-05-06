@@ -13,6 +13,8 @@ class WorkoutManager: ObservableObject {
     @Published var distance: Double = 0
     @Published var totalEnergyBurned: Double = 0
     @Published var workoutState: WorkoutState = .idle
+    @Published var saveError: Bool = false
+    @Published var healthKitAvailable: Bool = false
 
     private let healthKitManager = HealthKitManager()
     private let heartRateManager: HeartRateManager
@@ -25,10 +27,6 @@ class WorkoutManager: ObservableObject {
 
     init() {
         self.heartRateManager = HeartRateManager(healthKitManager: healthKitManager)
-        heartRateManager.$heartRate
-            .receive(on: RunLoop.main)
-            .assign(to: \.heartRate, on: self)
-            .store(in: &cancellables)
 
         timerManager.$elapsedTime
             .receive(on: RunLoop.main)
@@ -51,13 +49,12 @@ class WorkoutManager: ObservableObject {
                 self?.recordSampleData()
             }
             .store(in: &cancellables)
-
-        requestAuthorization()
     }
 
     func requestAuthorization() {
         guard HKHealthStore.isHealthDataAvailable() else {
             print("Health data not available on this device.")
+            healthKitAvailable = false
             return
         }
 
@@ -76,12 +73,29 @@ class WorkoutManager: ObservableObject {
         ]
 
         healthStore.requestAuthorization(toShare: writeTypes, read: readTypes) { success, error in
-            if let error = error {
-                print("HealthKit authorization error: \(error.localizedDescription)")
-            } else if !success {
-                print("HealthKit authorization not granted.")
+            DispatchQueue.main.async {
+                if let error = error {
+                    print("HealthKit authorization error: \(error.localizedDescription)")
+                    self.healthKitAvailable = false
+                } else if success == true {
+                    print("HealthKit authorization granted.")
+                    self.healthKitAvailable = true
+                    self.onHealthKitAuthorized()
+                } else {
+                    print("HealthKit authorization not granted.")
+                    self.healthKitAvailable = false
+                }
             }
         }
+    }
+
+    private func onHealthKitAuthorized() {
+        heartRateManager.$heartRate
+            .receive(on: RunLoop.main)
+            .assign(to: \.heartRate, on: self)
+            .store(in: &cancellables)
+
+        heartRateManager.startHeartRateQuery()
     }
 
     func startWorkout(pace: Double, caloriesPerSecond: Double = 0.1) {
@@ -112,12 +126,30 @@ class WorkoutManager: ObservableObject {
         timerManager.stop()
         heartRateManager.stopHeartRateQuery()
 
+        let startDate = Date().addingTimeInterval(-elapsedTime)
+        let endDate = Date()
+        var didComplete = false
+
+        let timeoutWorkItem = DispatchWorkItem {
+            if !didComplete {
+                print("Timeout: Failed to save workout in time.")
+                self.workoutState = .paused
+                self.saveError = true
+                onComplete()
+            }
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10, execute: timeoutWorkItem)
+
         healthKitManager.endWorkout(
-            startDate: Date().addingTimeInterval(-elapsedTime),
-            endDate: Date(),
+            startDate: startDate,
+            endDate: endDate,
             distance: distance,
             totalEnergyBurned: totalEnergyBurned
         ) {
+            didComplete = true
+            timeoutWorkItem.cancel()
+
             DispatchQueue.main.async {
                 self.workoutState = .idle
                 self.reset()

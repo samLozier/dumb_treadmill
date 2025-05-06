@@ -15,7 +15,8 @@ class HeartRateManager: ObservableObject {
     
     // Start heart rate query if HealthKit is authorized
     func startHeartRateQuery() {
-        guard healthKitManager.isAuthorized else {
+        print("HeartRateManager authorization state: \(healthKitManager.isAuthorized)")
+        guard HKHealthStore.isHealthDataAvailable(), healthKitManager.isAuthorized else {
             print("HealthKit not authorized for heart rate data.")
             return
         }

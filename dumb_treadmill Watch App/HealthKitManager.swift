@@ -9,7 +9,10 @@ class HealthKitManager: NSObject, ObservableObject {
 
     // Request authorization to read and write HealthKit data
     func requestAuthorization() {
-        guard HKHealthStore.isHealthDataAvailable() else { return }
+        guard HKHealthStore.isHealthDataAvailable() else {
+            print("Health data is not available on this device.")
+            return
+        }
 
         let heartRateType = HKObjectType.quantityType(forIdentifier: .heartRate)!
         let workoutType = HKObjectType.workoutType()
@@ -17,13 +20,27 @@ class HealthKitManager: NSObject, ObservableObject {
         let typesToRead: Set = [workoutType, heartRateType]
 
         healthStore.requestAuthorization(toShare: typesToShare, read: typesToRead) { (success, error) in
-            DispatchQueue.main.async { // Ensure the UI update happens on the main thread
-                if !success {
-                    print("HealthKit authorization failed: \(String(describing: error))")
-                    self.isAuthorized = false // Set it to false if authorization failed
+            DispatchQueue.main.async {
+                if let error = error {
+                    print("HealthKit authorization error: \(error.localizedDescription)")
+                    self.isAuthorized = false
+                    return
+                }
+
+                let heartRateStatus = self.healthStore.authorizationStatus(for: heartRateType)
+                let workoutStatus = self.healthStore.authorizationStatus(for: workoutType)
+
+                let isHeartRateAuthorized = (heartRateStatus == .sharingAuthorized)
+                let isWorkoutAuthorized = (workoutStatus == .sharingAuthorized)
+
+                self.isAuthorized = isHeartRateAuthorized && isWorkoutAuthorized
+
+                print("Authorization status — Heart Rate: \(heartRateStatus.rawValue), Workout: \(workoutStatus.rawValue)")
+
+                if self.isAuthorized {
+                    print("HealthKit authorization succeeded for all types.")
                 } else {
-                    print("HealthKit authorization succeeded")
-                    self.isAuthorized = true // Update on main thread to avoid the warning
+                    print("HealthKit not fully authorized. HeartRate (read or share): \(isHeartRateAuthorized), Workout: \(isWorkoutAuthorized)")
                 }
             }
         }
