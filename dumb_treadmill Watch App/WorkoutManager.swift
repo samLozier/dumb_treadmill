@@ -16,12 +16,19 @@ class WorkoutManager: ObservableObject {
     @Published var saveError: Bool = false
     @Published var healthKitAvailable: Bool = false
 
+    @Published var finalStartDate: Date = Date()
+    @Published var finalDistance: Double = 0
+    @Published var finalEnergyBurned: Double = 0
+
     private let healthKitManager = HealthKitManager()
     private let heartRateManager: HeartRateManager
     private let timerManager = TimerManager()
 
     private var pace: Double = 0.0
     private var caloriesPerSecond: Double = 0.1
+
+    private var lastRecordedDistance: Double = 0
+    private var lastRecordedEnergy: Double = 0
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -112,6 +119,10 @@ class WorkoutManager: ObservableObject {
         let endDate = Date()
         var didComplete = false
 
+        self.finalStartDate = startDate
+        self.finalDistance = distance
+        self.finalEnergyBurned = totalEnergyBurned
+
         let timeoutWorkItem = DispatchWorkItem {
             if !didComplete {
                 print("Timeout: Failed to save workout in time.")
@@ -146,16 +157,29 @@ class WorkoutManager: ObservableObject {
         distance = 0
         totalEnergyBurned = 0
         workoutState = .idle
+        lastRecordedDistance = 0
+        lastRecordedEnergy = 0
     }
 
     private func recordSampleData() {
         let now = Date()
-        let distanceQuantity = HKQuantity(unit: .mile(), doubleValue: distance)
-        let energyQuantity = HKQuantity(unit: .kilocalorie(), doubleValue: totalEnergyBurned)
+        let deltaDistance = distance - lastRecordedDistance
+        let deltaEnergy = totalEnergyBurned - lastRecordedEnergy
 
-        let distanceSample = HKQuantitySample(type: HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning)!, quantity: distanceQuantity, start: now.addingTimeInterval(-1), end: now)
-        let energySample = HKQuantitySample(type: HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!, quantity: energyQuantity, start: now.addingTimeInterval(-1), end: now)
+        guard deltaDistance > 0 || deltaEnergy > 0 else {
+            return
+        }
+
+        let distanceQuantity = HKQuantity(unit: .mile(), doubleValue: deltaDistance)
+        let energyQuantity = HKQuantity(unit: .kilocalorie(), doubleValue: deltaEnergy)
+
+        let startTime = now.addingTimeInterval(-1)
+        let distanceSample = HKQuantitySample(type: HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning)!, quantity: distanceQuantity, start: startTime, end: now)
+        let energySample = HKQuantitySample(type: HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!, quantity: energyQuantity, start: startTime, end: now)
 
         healthKitManager.add(samples: [distanceSample, energySample])
+
+        lastRecordedDistance = distance
+        lastRecordedEnergy = totalEnergyBurned
     }
 }

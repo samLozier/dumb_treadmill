@@ -6,33 +6,38 @@ struct PausedView: View {
     @State private var showConfirmation = false
 
     var body: some View {
-        VStack {
-            Text("Workout Paused")
-                .font(.title2)
-                .padding(.bottom, 20)
-            Text("Elapsed Time: \(workoutManager.elapsedTime.formatted())")
-            Text("Distance: \(workoutManager.distance.formattedDistance())")
-                .padding(.bottom, 20)
+        ScrollView {
+            VStack {
+                Text("Workout Paused")
+                    .font(.title2)
+                    .padding(.bottom, 20)
+                Text("Elapsed Time: \(workoutManager.elapsedTime.formatted())")
+                Text("Distance: \(workoutManager.distance.formattedDistance())")
+                    .padding(.bottom, 20)
 
-            if workoutManager.workoutState == .saving {
-                ProgressView("Saving Workout...")
+                if workoutManager.workoutState == .saving {
+                    ProgressView("Saving Workout...")
+                        .padding()
+                } else {
+                    Button("Resume Workout") {
+                        workoutManager.resumeWorkout()
+                    }
                     .padding()
-            } else {
-                Button("Resume Workout") {
-                    workoutManager.resumeWorkout()
-                }
-                .padding()
 
-                Button("Finish Workout") {
-                    showConfirmation = true
+                    Button("Finish Workout") {
+                        showConfirmation = true
+                    }
+                    .padding()
                 }
-                .padding()
             }
+            .padding()
         }
-        .padding()
         .alert("Finish Workout?", isPresented: $showConfirmation) {
             Button("Save", role: .none) {
-                workoutManager.finishWorkout(onComplete: onFinish)
+                workoutManager.finishWorkout {
+                    workoutManager.reset()
+                    onFinish()
+                }
             }
             Button("Discard", role: .destructive) {
                 workoutManager.reset()

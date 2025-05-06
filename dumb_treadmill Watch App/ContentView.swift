@@ -21,12 +21,8 @@ struct ContentView: View {
                     )
                     .environmentObject(workoutManager)
                 case .saving:
-                    SavingWorkoutView(
-                        distance: workoutManager.distance,
-                        totalEnergyBurned: workoutManager.totalEnergyBurned,
-                        startDate: Date().addingTimeInterval(-workoutManager.elapsedTime),
-                        endDate: Date()
-                    )
+                    SavingWorkoutView()
+                        .environmentObject(workoutManager)
                 }
             }
         }
