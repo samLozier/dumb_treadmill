@@ -20,7 +20,7 @@
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:dumb_treadmill.xcodeproj",
-        "identifier" : "7302AD0C2BF55E2300057E21",
+        "identifier" : "7300B1022DC56D9F004CF453",
         "name" : "dumb_treadmill Watch AppTests"
       }
     },
@@ -28,7 +28,7 @@
       "parallelizable" : true,
       "target" : {
         "containerPath" : "container:dumb_treadmill.xcodeproj",
-        "identifier" : "7302AD162BF55E2300057E21",
+        "identifier" : "7300B10C2DC56D9F004CF453",
         "name" : "dumb_treadmill Watch AppUITests"
       }
     }

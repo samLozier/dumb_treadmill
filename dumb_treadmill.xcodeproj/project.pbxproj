@@ -580,7 +580,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "dumb_treadmill App/Info.plist";
+				INFOPLIST_FILE = "dumb_treadmill Watch App/Info.plist";
 				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "Your Description Here";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Your Description Here";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Your Description Here";
@@ -642,7 +642,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "dumb_treadmill App/Info.plist";
+				INFOPLIST_FILE = "dumb_treadmill Watch App/Info.plist";
 				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "Your Description Here";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Your Description Here";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Your Description Here";

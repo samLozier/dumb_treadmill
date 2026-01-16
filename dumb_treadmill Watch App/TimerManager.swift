@@ -11,7 +11,7 @@ class TimerManager: ObservableObject {
     private var caloriesPerSecond: Double = 0.1 // Example calories per second (adjust as needed)
     private var paceMetersPerSecond: Double = 1.0
 
-    func start(pace: Double, caloriesPerSecond: Double) {
+    func start(pace: Double, caloriesPerSecond: Double, useTimer: Bool = true) {
         timer?.cancel()
         startDate = Date()
         elapsedTime = 0
@@ -21,14 +21,13 @@ class TimerManager: ObservableObject {
         self.paceMetersPerSecond = pace * 1609.344 / 3600.0
         self.caloriesPerSecond = caloriesPerSecond
 
-        timer = Timer.publish(every: 1, on: .main, in: .common)
-            .autoconnect()
-            .sink { [weak self] _ in
-                guard let self = self else { return }
-                self.elapsedTime += 1
-                self.distance += self.paceMetersPerSecond
-                self.totalEnergyBurned += self.caloriesPerSecond
-            }
+        if useTimer {
+            timer = Timer.publish(every: 1, on: .main, in: .common)
+                .autoconnect()
+                .sink { [weak self] _ in
+                    self?.tick()
+                }
+        }
     }
 
     func pause() {
@@ -40,10 +39,7 @@ class TimerManager: ObservableObject {
         timer = Timer.publish(every: 1, on: .main, in: .common)
             .autoconnect()
             .sink { [weak self] _ in
-                guard let self = self else { return }
-                self.elapsedTime += 1
-                self.distance += self.paceMetersPerSecond
-                self.totalEnergyBurned += self.caloriesPerSecond
+                self?.tick()
             }
     }
 
@@ -59,5 +55,11 @@ class TimerManager: ObservableObject {
         totalEnergyBurned = 0.0
         startDate = nil // Clear the start date when the workout is reset
         timer?.cancel()
+    }
+
+    func tick() {
+        elapsedTime += 1
+        distance += paceMetersPerSecond
+        totalEnergyBurned += caloriesPerSecond
     }
 }

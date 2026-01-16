@@ -48,52 +48,6 @@
             default = "YES">
          </TestPlanReference>
       </TestPlans>
-      <Testables>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "7302AD0C2BF55E2300057E21"
-               BuildableName = "dumb_treadmill Watch AppTests.xctest"
-               BlueprintName = "dumb_treadmill Watch AppTests"
-               ReferencedContainer = "container:dumb_treadmill.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "7302AD162BF55E2300057E21"
-               BuildableName = "dumb_treadmill Watch AppUITests.xctest"
-               BlueprintName = "dumb_treadmill Watch AppUITests"
-               ReferencedContainer = "container:dumb_treadmill.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "7300B1022DC56D9F004CF453"
-               BuildableName = "dumb_treadmill Watch AppTests.xctest"
-               BlueprintName = "dumb_treadmill Watch AppTests"
-               ReferencedContainer = "container:dumb_treadmill.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "7300B10C2DC56D9F004CF453"
-               BuildableName = "dumb_treadmill Watch AppUITests.xctest"
-               BlueprintName = "dumb_treadmill Watch AppUITests"
-               ReferencedContainer = "container:dumb_treadmill.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-      </Testables>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"

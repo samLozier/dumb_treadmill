@@ -38,4 +38,25 @@ final class dumb_treadmill_Watch_AppUITests: XCTestCase {
             XCUIApplication().launch()
         }
     }
+
+    @MainActor
+    func testStartPauseFlow() throws {
+        let app = XCUIApplication()
+        app.launchArguments.append("UITEST_DISABLE_HEALTHKIT")
+        app.launch()
+
+        let startButton = app.buttons["Start"]
+        XCTAssertTrue(startButton.waitForExistence(timeout: 5))
+        startButton.tap()
+
+        let inProgress = app.staticTexts["Workout in Progress"]
+        XCTAssertTrue(inProgress.waitForExistence(timeout: 5))
+
+        let pauseButton = app.buttons["Pause"]
+        XCTAssertTrue(pauseButton.waitForExistence(timeout: 5))
+        pauseButton.tap()
+
+        let paused = app.staticTexts["Workout Paused"]
+        XCTAssertTrue(paused.waitForExistence(timeout: 5))
+    }
 }

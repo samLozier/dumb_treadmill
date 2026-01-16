@@ -27,6 +27,9 @@ struct ContentView: View {
             }
         }
         .onAppear {
+            if ProcessInfo.processInfo.arguments.contains("UITEST_DISABLE_HEALTHKIT") {
+                return
+            }
             workoutManager.requestAuthorization()
         }
     }

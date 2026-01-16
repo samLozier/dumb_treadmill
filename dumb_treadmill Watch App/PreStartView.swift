@@ -19,7 +19,7 @@ struct PreStartView: View {
                     Text(unit.displayName).tag(unit.rawValue)
                 }
             }
-            .pickerStyle(.segmented)
+            .pickerStyle(.wheel)
 
             if workoutManager.healthKitAvailable {
                 Text("Heart Rate: \(workoutManager.heartRate, specifier: "%.0f") bpm")
