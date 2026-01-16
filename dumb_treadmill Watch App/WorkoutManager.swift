@@ -162,6 +162,16 @@ class WorkoutManager: ObservableObject {
     }
 
     private func recordSampleData() {
+        guard healthKitAvailable else {
+            print("HealthKit not available, skipping sample recording.")
+            return
+        }
+
+        guard healthKitManager.isAuthorized else {
+            print("HealthKit write access not granted, skipping sample recording.")
+            return
+        }
+
         let now = Date()
         let deltaDistance = distance - lastRecordedDistance
         let deltaEnergy = totalEnergyBurned - lastRecordedEnergy
