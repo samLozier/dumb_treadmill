@@ -4,7 +4,6 @@ import HealthKit
 struct SavingWorkoutView: View {
     @EnvironmentObject var workoutManager: WorkoutManager
     @Environment(\.dismiss) private var dismiss
-    @State private var saveComplete = false
     @AppStorage("distanceUnit") private var distanceUnitRaw: String = DistanceUnit.miles.rawValue
 
     private var distanceUnit: DistanceUnit {
@@ -33,7 +32,7 @@ struct SavingWorkoutView: View {
                     .padding(.horizontal)
                     .multilineTextAlignment(.center)
 
-                if saveComplete {
+                if workoutManager.saveCompleted {
                     VStack(alignment: .leading, spacing: 10) {
                         Text("Workout Details:")
                             .font(.headline)
@@ -47,6 +46,7 @@ struct SavingWorkoutView: View {
                     .foregroundColor(.gray)
 
                     Button("Done") {
+                        workoutManager.saveCompleted = false
                         workoutManager.workoutState = .idle
                     }
                     .padding()
@@ -56,10 +56,7 @@ struct SavingWorkoutView: View {
             .padding()
         }
         .onAppear {
-            Task {
-                try? await Task.sleep(nanoseconds: 2 * 1_000_000_000)
-                saveComplete = true
-            }
+            workoutManager.saveCompleted = false
         }
     }
 }

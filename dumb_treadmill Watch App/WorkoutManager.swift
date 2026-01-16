@@ -19,6 +19,7 @@ class WorkoutManager: ObservableObject {
     @Published var finalStartDate: Date = Date()
     @Published var finalDistance: Double = 0
     @Published var finalEnergyBurned: Double = 0
+    @Published var saveCompleted: Bool = false
 
     private let healthKitManager = HealthKitManager()
     private let heartRateManager: HeartRateManager
@@ -111,6 +112,7 @@ class WorkoutManager: ObservableObject {
 
     func finishWorkout(onComplete: @escaping () -> Void) {
         workoutState = .saving
+        saveCompleted = false
 
         timerManager.stop()
         heartRateManager.stopHeartRateQuery()
@@ -144,7 +146,7 @@ class WorkoutManager: ObservableObject {
             timeoutWorkItem.cancel()
 
             DispatchQueue.main.async {
-                self.workoutState = .idle
+                self.saveCompleted = true
                 self.reset()
                 onComplete()
             }
