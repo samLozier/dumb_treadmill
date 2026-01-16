@@ -19,10 +19,5 @@ struct DuringWorkoutView: View {
             .navigationBarBackButtonHidden(true)
         }
         .padding()
-        .onAppear {
-            if workoutManager.workoutState != .paused {
-                workoutManager.resumeWorkout()
-            }
-        }
     }
 }

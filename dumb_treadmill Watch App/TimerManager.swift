@@ -36,6 +36,7 @@ class TimerManager: ObservableObject {
     }
 
     func resume() {
+        timer?.cancel()
         timer = Timer.publish(every: 1, on: .main, in: .common)
             .autoconnect()
             .sink { [weak self] _ in
