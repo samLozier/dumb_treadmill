@@ -3,8 +3,10 @@ import HealthKit
 
 struct SavingWorkoutView: View {
     @EnvironmentObject var workoutManager: WorkoutManager
-    @Environment(\.dismiss) private var dismiss
     @AppStorage("distanceUnit") private var distanceUnitRaw: String = DistanceUnit.miles.rawValue
+    @AppStorage("lastEffort") private var lastEffort: Int = 0
+    @State private var effort: Int = 5
+    @State private var isSavingEffort = false
 
     private var distanceUnit: DistanceUnit {
         DistanceUnit(rawValue: distanceUnitRaw) ?? .miles
@@ -45,18 +47,52 @@ struct SavingWorkoutView: View {
                     .padding()
                     .foregroundColor(.gray)
 
-                    Button("Done") {
-                        workoutManager.saveCompleted = false
-                        workoutManager.workoutState = .idle
+                    if workoutManager.canSaveWorkoutEffort {
+                        VStack(spacing: 12) {
+                            Text("How hard was it?")
+                                .font(.headline)
+
+                            Stepper("Effort: \(effort)", value: $effort, in: 1...10)
+
+                            if isSavingEffort {
+                                ProgressView("Saving effort...")
+                            } else {
+                                Button("Save Effort") {
+                                    isSavingEffort = true
+                                    workoutManager.saveWorkoutEffort(score: Double(effort)) { success in
+                                        if success {
+                                            lastEffort = effort
+                                        }
+                                        isSavingEffort = false
+                                        finishSaving()
+                                    }
+                                }
+                                .buttonStyle(.borderedProminent)
+
+                                Button("Skip") {
+                                    finishSaving()
+                                }
+                            }
+                        }
+                        .padding()
+                    } else {
+                        Button("Done") {
+                            finishSaving()
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .padding()
                     }
-                    .padding()
-                    .buttonStyle(.borderedProminent)
                 }
             }
             .padding()
         }
         .onAppear {
             workoutManager.saveCompleted = false
+            effort = max(1, min(lastEffort == 0 ? 5 : lastEffort, 10))
         }
+    }
+
+    private func finishSaving() {
+        workoutManager.completeSaving()
     }
 }

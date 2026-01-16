@@ -20,6 +20,7 @@ class WorkoutManager: ObservableObject {
     @Published var finalDistance: Double = 0
     @Published var finalEnergyBurned: Double = 0
     @Published var saveCompleted: Bool = false
+    @Published var finalWorkout: HKWorkout?
 
     private let healthKitManager = HealthKitManager()
     private let heartRateManager: HeartRateManager
@@ -113,6 +114,7 @@ class WorkoutManager: ObservableObject {
     func finishWorkout(onComplete: @escaping () -> Void) {
         workoutState = .saving
         saveCompleted = false
+        finalWorkout = nil
 
         timerManager.stop()
         heartRateManager.stopHeartRateQuery()
@@ -141,13 +143,13 @@ class WorkoutManager: ObservableObject {
             endDate: endDate,
             distance: distance,
             totalEnergyBurned: totalEnergyBurned
-        ) {
+        ) { workout in
             didComplete = true
             timeoutWorkItem.cancel()
 
             DispatchQueue.main.async {
+                self.finalWorkout = workout
                 self.saveCompleted = true
-                self.reset()
                 onComplete()
             }
         }
@@ -161,6 +163,34 @@ class WorkoutManager: ObservableObject {
         workoutState = .idle
         lastRecordedDistance = 0
         lastRecordedEnergy = 0
+    }
+
+    func completeSaving() {
+        saveCompleted = false
+        finalWorkout = nil
+        reset()
+    }
+
+    var canSaveWorkoutEffort: Bool {
+        guard healthKitAvailable else {
+            return false
+        }
+
+        guard let workout = finalWorkout else {
+            return false
+        }
+
+        let effortType = HKObjectType.quantityType(forIdentifier: .workoutEffortScore)!
+        return healthKitManager.authorizationStatus(for: effortType) == .sharingAuthorized && workout.duration > 0
+    }
+
+    func saveWorkoutEffort(score: Double, completion: @escaping (Bool) -> Void) {
+        guard canSaveWorkoutEffort, let workout = finalWorkout else {
+            completion(false)
+            return
+        }
+
+        healthKitManager.saveWorkoutEffort(score: score, workout: workout, completion: completion)
     }
 
     private func recordSampleData() {

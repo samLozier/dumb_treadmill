@@ -19,9 +19,10 @@ class HealthKitManager: NSObject, ObservableObject {
         let workoutType = HKObjectType.workoutType()
         let distanceType = HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!
         let energyType = HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
+        let effortType = HKObjectType.quantityType(forIdentifier: .workoutEffortScore)!
 
-        let typesToShare: Set = [workoutType, heartRateType, distanceType, energyType]
-        let typesToRead: Set = [workoutType, heartRateType, distanceType, energyType]
+        let typesToShare: Set = [workoutType, heartRateType, distanceType, energyType, effortType]
+        let typesToRead: Set = [workoutType, heartRateType, distanceType, energyType, effortType]
 
         healthStore.requestAuthorization(toShare: typesToShare, read: typesToRead) { (success, error) in
             DispatchQueue.main.async {
@@ -84,7 +85,7 @@ class HealthKitManager: NSObject, ObservableObject {
     }
 
     // End the workout and save it to HealthKit
-    func endWorkout(startDate: Date, endDate: Date, distance: Double, totalEnergyBurned: Double, completion: @escaping () -> Void) {
+    func endWorkout(startDate: Date, endDate: Date, distance: Double, totalEnergyBurned: Double, completion: @escaping (HKWorkout?) -> Void) {
         // Ensure to update the workout with actual distance and energy burned values from the tracked session
         print("Ending workout with startDate: \(startDate), endDate: \(endDate), distance: \(distance), energy burned: \(totalEnergyBurned)")
 
@@ -112,7 +113,7 @@ class HealthKitManager: NSObject, ObservableObject {
             
             if let error = error {
                 print("Error adding workout data: \(error.localizedDescription)")
-                completion()
+                completion(nil)
                 return
             }
             
@@ -121,7 +122,7 @@ class HealthKitManager: NSObject, ObservableObject {
             self.workoutBuilder?.endCollection(withEnd: endDate) { success, error in
                 if let error = error {
                     print("Error ending workout collection: \(error.localizedDescription)")
-                    completion()
+                    completion(nil)
                     return
                 }
                 
@@ -132,10 +133,11 @@ class HealthKitManager: NSObject, ObservableObject {
                     
                     if let error = error {
                         print("Error finishing workout: \(error.localizedDescription)")
+                        completion(nil)
                     } else {
                         print("Workout successfully saved: \(String(describing: workout))")
+                        completion(workout)
                     }
-                    completion()
                 }
             }
         }
@@ -144,6 +146,40 @@ class HealthKitManager: NSObject, ObservableObject {
     // Expose the HKHealthStore instance
     func getHealthStore() -> HKHealthStore {
         return healthStore
+    }
+
+    func authorizationStatus(for type: HKObjectType) -> HKAuthorizationStatus {
+        return healthStore.authorizationStatus(for: type)
+    }
+
+    func saveWorkoutEffort(score: Double, workout: HKWorkout, completion: @escaping (Bool) -> Void) {
+        let effortType = HKQuantityType.quantityType(forIdentifier: .workoutEffortScore)!
+        let effortUnit = HKUnit.appleEffortScoreUnit()
+        let effortQuantity = HKQuantity(unit: effortUnit, doubleValue: score)
+        let sample = HKQuantitySample(type: effortType, quantity: effortQuantity, start: workout.startDate, end: workout.endDate)
+
+        healthStore.save(sample) { success, error in
+            if let error = error {
+                print("Error saving effort sample: \(error.localizedDescription)")
+            }
+
+            guard success else {
+                DispatchQueue.main.async {
+                    completion(false)
+                }
+                return
+            }
+
+            self.healthStore.relateWorkoutEffortSample(sample, withWorkout: workout, activity: nil) { relateSuccess, relateError in
+                if let relateError = relateError {
+                    print("Error relating effort sample: \(relateError.localizedDescription)")
+                }
+
+                DispatchQueue.main.async {
+                    completion(relateSuccess)
+                }
+            }
+        }
     }
 }
 
