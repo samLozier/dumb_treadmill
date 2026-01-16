@@ -7,6 +7,15 @@ enum WorkoutState {
     case idle, active, paused, saving
 }
 
+struct WorkoutSegment: Identifiable {
+    let id = UUID()
+    let paceMph: Double
+    let startElapsed: TimeInterval
+    let endElapsed: TimeInterval
+    let distanceMeters: Double
+    let calories: Double
+}
+
 class WorkoutManager: ObservableObject {
     @Published var heartRate: Double = 0.0
     @Published var elapsedTime: TimeInterval = 0
@@ -21,12 +30,18 @@ class WorkoutManager: ObservableObject {
     @Published var finalEnergyBurned: Double = 0
     @Published var saveCompleted: Bool = false
     @Published var finalWorkout: HKWorkout?
+    @Published var currentPaceMph: Double = 3.0
+    @Published var segments: [WorkoutSegment] = []
+    @Published var userWeightLbs: Double = 185.0
 
     private let healthKitManager = HealthKitManager()
     private let heartRateManager: HeartRateManager
     private let timerManager = TimerManager()
 
-    private var pace: Double = 0.0
+    private var segmentStartElapsedTime: TimeInterval = 0
+    private var segmentStartDistance: Double = 0
+    private var segmentStartEnergy: Double = 0
+    private var segmentPaceMph: Double = 0
     private var caloriesPerSecond: Double = 0.1
 
     private var lastRecordedDistance: Double = 0
@@ -90,13 +105,20 @@ class WorkoutManager: ObservableObject {
     }
 
     func startWorkout(pace: Double, caloriesPerSecond: Double = 0.1) {
-        self.pace = pace
-        self.caloriesPerSecond = caloriesPerSecond
+        let calculatedCalories = caloriesPerSecondForPace(pace)
+        currentPaceMph = pace
+        self.caloriesPerSecond = calculatedCalories
         workoutState = .active
 
         healthKitManager.startWorkout()
         heartRateManager.startHeartRateQuery()
-        timerManager.start(pace: pace, caloriesPerSecond: caloriesPerSecond)
+        timerManager.start(pace: pace, caloriesPerSecond: calculatedCalories)
+
+        segments.removeAll()
+        segmentStartElapsedTime = 0
+        segmentStartDistance = 0
+        segmentStartEnergy = 0
+        segmentPaceMph = pace
     }
 
     func pauseWorkout() {
@@ -111,10 +133,19 @@ class WorkoutManager: ObservableObject {
         heartRateManager.startHeartRateQuery()
     }
 
+    func updatePace(paceMph: Double) {
+        currentPaceMph = paceMph
+        let calculatedCalories = caloriesPerSecondForPace(paceMph)
+        updateSegmentsForPaceChange(to: paceMph)
+        timerManager.updatePace(pace: paceMph, caloriesPerSecond: calculatedCalories)
+    }
+
     func finishWorkout(onComplete: @escaping () -> Void) {
         workoutState = .saving
         saveCompleted = false
         finalWorkout = nil
+
+        finalizeCurrentSegment()
 
         timerManager.stop()
         heartRateManager.stopHeartRateQuery()
@@ -163,12 +194,101 @@ class WorkoutManager: ObservableObject {
         workoutState = .idle
         lastRecordedDistance = 0
         lastRecordedEnergy = 0
+        currentPaceMph = 0
+        segments.removeAll()
+        segmentStartElapsedTime = 0
+        segmentStartDistance = 0
+        segmentStartEnergy = 0
+        segmentPaceMph = 0
     }
 
     func completeSaving() {
         saveCompleted = false
         finalWorkout = nil
         reset()
+    }
+
+    private func caloriesPerSecondForPace(_ paceMph: Double) -> Double {
+        guard paceMph > 0 else {
+            return 0
+        }
+
+        let met = metForTreadmillSpeed(paceMph)
+        let weightKg = userWeightLbs * 0.45359237
+        let caloriesPerMinute = met * weightKg * 3.5 / 200.0
+        return caloriesPerMinute / 60.0
+    }
+
+    private func metForTreadmillSpeed(_ paceMph: Double) -> Double {
+        let points: [(Double, Double)] = [
+            (2.0, 2.5),
+            (3.0, 3.3),
+            (4.0, 5.0),
+            (5.0, 8.3),
+            (6.0, 9.8),
+            (7.0, 11.0),
+            (8.0, 11.8)
+        ]
+
+        if paceMph <= points[0].0 {
+            return points[0].1
+        }
+
+        for index in 1..<points.count {
+            let (prevPace, prevMet) = points[index - 1]
+            let (nextPace, nextMet) = points[index]
+            if paceMph <= nextPace {
+                let ratio = (paceMph - prevPace) / (nextPace - prevPace)
+                return prevMet + ratio * (nextMet - prevMet)
+            }
+        }
+
+        let (lastPace, lastMet) = points[points.count - 1]
+        let (priorPace, priorMet) = points[points.count - 2]
+        let slope = (lastMet - priorMet) / (lastPace - priorPace)
+        return lastMet + slope * (paceMph - lastPace)
+    }
+
+    private func updateSegmentsForPaceChange(to newPaceMph: Double) {
+        let duration = elapsedTime - segmentStartElapsedTime
+        guard duration > 0 else {
+            segmentPaceMph = newPaceMph
+            return
+        }
+
+        let segment = WorkoutSegment(
+            paceMph: segmentPaceMph,
+            startElapsed: segmentStartElapsedTime,
+            endElapsed: elapsedTime,
+            distanceMeters: distance - segmentStartDistance,
+            calories: totalEnergyBurned - segmentStartEnergy
+        )
+        segments.append(segment)
+
+        segmentStartElapsedTime = elapsedTime
+        segmentStartDistance = distance
+        segmentStartEnergy = totalEnergyBurned
+        segmentPaceMph = newPaceMph
+    }
+
+    private func finalizeCurrentSegment() {
+        let duration = elapsedTime - segmentStartElapsedTime
+        guard duration > 0 else {
+            return
+        }
+
+        let segment = WorkoutSegment(
+            paceMph: segmentPaceMph,
+            startElapsed: segmentStartElapsedTime,
+            endElapsed: elapsedTime,
+            distanceMeters: distance - segmentStartDistance,
+            calories: totalEnergyBurned - segmentStartEnergy
+        )
+        segments.append(segment)
+
+        segmentStartElapsedTime = elapsedTime
+        segmentStartDistance = distance
+        segmentStartEnergy = totalEnergyBurned
     }
 
     var canSaveWorkoutEffort: Bool {

@@ -4,6 +4,7 @@ struct PreStartView: View {
     @EnvironmentObject var workoutManager: WorkoutManager
     @State private var pace: Double = 3.0
     @AppStorage("distanceUnit") private var distanceUnitRaw: String = DistanceUnit.miles.rawValue
+    @AppStorage("userWeightLbs") private var userWeightLbs: Double = 185.0
 
     private var distanceUnit: DistanceUnit {
         DistanceUnit(rawValue: distanceUnitRaw) ?? .miles
@@ -21,6 +22,12 @@ struct PreStartView: View {
             }
             .pickerStyle(.wheel)
 
+            VStack(spacing: 6) {
+                Text("Weight: \(Int(userWeightLbs)) lb")
+                Stepper("Weight", value: $userWeightLbs, in: 80...350, step: 1)
+                    .labelsHidden()
+            }
+
             if workoutManager.healthKitAvailable {
                 Text("Heart Rate: \(workoutManager.heartRate, specifier: "%.0f") bpm")
             } else {
@@ -35,5 +42,11 @@ struct PreStartView: View {
             }
         }
         .padding()
+        .onAppear {
+            workoutManager.userWeightLbs = userWeightLbs
+        }
+        .onChange(of: userWeightLbs) { _, newValue in
+            workoutManager.userWeightLbs = newValue
+        }
     }
 }
