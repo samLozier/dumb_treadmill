@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var workoutManager = WorkoutManager()
+    @EnvironmentObject var workoutManager: WorkoutManager
 
     var body: some View {
         NavigationStack {
