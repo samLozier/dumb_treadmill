@@ -339,7 +339,28 @@ class WorkoutManager: ObservableObject {
         let distanceSample = HKQuantitySample(type: HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning)!, quantity: distanceQuantity, start: startTime, end: now)
         let energySample = HKQuantitySample(type: HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!, quantity: energyQuantity, start: startTime, end: now)
 
-        healthKitManager.add(samples: [distanceSample, energySample])
+        var samples: [HKSample] = [distanceSample, energySample]
+
+        if #available(watchOS 10.0, *) {
+            let speedMetersPerSecond = currentPaceMph * 1609.344 / 3600.0
+            if speedMetersPerSecond > 0 {
+                let speedUnit = HKUnit.meter().unitDivided(by: .second())
+                let speedQuantity = HKQuantity(unit: speedUnit, doubleValue: speedMetersPerSecond)
+                let speedType: HKQuantityType
+                if currentPaceMph >= 5.0 {
+                    speedType = HKQuantityType.quantityType(forIdentifier: .runningSpeed)!
+                } else {
+                    speedType = HKQuantityType.quantityType(forIdentifier: .walkingSpeed)!
+                }
+
+                if healthKitManager.authorizationStatus(for: speedType) == .sharingAuthorized {
+                    let speedSample = HKQuantitySample(type: speedType, quantity: speedQuantity, start: startTime, end: now)
+                    samples.append(speedSample)
+                }
+            }
+        }
+
+        healthKitManager.add(samples: samples)
 
         lastRecordedDistance = distance
         lastRecordedEnergy = totalEnergyBurned

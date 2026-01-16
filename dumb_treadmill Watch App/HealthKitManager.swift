@@ -21,8 +21,17 @@ class HealthKitManager: NSObject, ObservableObject {
         let energyType = HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
         let effortType = HKObjectType.quantityType(forIdentifier: .workoutEffortScore)!
 
-        let typesToShare: Set = [workoutType, heartRateType, distanceType, energyType, effortType]
-        let typesToRead: Set = [workoutType, heartRateType, distanceType, energyType, effortType]
+        var typesToShare: Set = [workoutType, heartRateType, distanceType, energyType, effortType]
+        var typesToRead: Set = [workoutType, heartRateType, distanceType, energyType, effortType]
+
+        if #available(watchOS 10.0, *) {
+            let walkingSpeedType = HKObjectType.quantityType(forIdentifier: .walkingSpeed)!
+            let runningSpeedType = HKObjectType.quantityType(forIdentifier: .runningSpeed)!
+            typesToShare.insert(walkingSpeedType)
+            typesToShare.insert(runningSpeedType)
+            typesToRead.insert(walkingSpeedType)
+            typesToRead.insert(runningSpeedType)
+        }
 
         healthStore.requestAuthorization(toShare: typesToShare, read: typesToRead) { (success, error) in
             DispatchQueue.main.async {
@@ -154,7 +163,7 @@ class HealthKitManager: NSObject, ObservableObject {
 
     func saveWorkoutEffort(score: Double, workout: HKWorkout, completion: @escaping (Bool) -> Void) {
         let effortType = HKQuantityType.quantityType(forIdentifier: .workoutEffortScore)!
-        let effortUnit = HKUnit.appleEffortScoreUnit()
+        let effortUnit = HKUnit.appleEffortScore()
         let effortQuantity = HKQuantity(unit: effortUnit, doubleValue: score)
         let sample = HKQuantitySample(type: effortType, quantity: effortQuantity, start: workout.startDate, end: workout.endDate)
 
@@ -170,7 +179,7 @@ class HealthKitManager: NSObject, ObservableObject {
                 return
             }
 
-            self.healthStore.relateWorkoutEffortSample(sample, withWorkout: workout, activity: nil) { relateSuccess, relateError in
+            self.healthStore.relateWorkoutEffortSample(sample, with: workout, activity: nil) { relateSuccess, relateError in
                 if let relateError = relateError {
                     print("Error relating effort sample: \(relateError.localizedDescription)")
                 }
