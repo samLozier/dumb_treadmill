@@ -180,7 +180,7 @@ class WorkoutManager: ObservableObject {
             return
         }
 
-        let distanceQuantity = HKQuantity(unit: .mile(), doubleValue: deltaDistance)
+        let distanceQuantity = HKQuantity(unit: .meter(), doubleValue: deltaDistance)
         let energyQuantity = HKQuantity(unit: .kilocalorie(), doubleValue: deltaEnergy)
 
         let startTime = now.addingTimeInterval(-1)

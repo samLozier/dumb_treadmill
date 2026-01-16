@@ -2,6 +2,11 @@ import SwiftUI
 
 struct DuringWorkoutView: View {
     @EnvironmentObject var workoutManager: WorkoutManager
+    @AppStorage("distanceUnit") private var distanceUnitRaw: String = DistanceUnit.miles.rawValue
+
+    private var distanceUnit: DistanceUnit {
+        DistanceUnit(rawValue: distanceUnitRaw) ?? .miles
+    }
 
     var body: some View {
         VStack {
@@ -9,7 +14,7 @@ struct DuringWorkoutView: View {
 
             Text("Heart Rate: \(workoutManager.heartRate, specifier: "%.0f") bpm")
             Text("Elapsed Time: \(workoutManager.elapsedTime.formatted())")
-            Text("Distance: \(workoutManager.distance.formattedDistance())")
+            Text("Distance: \(workoutManager.distance.formattedDistance(unit: distanceUnit))")
 
             Button(action: {
                 workoutManager.pauseWorkout()

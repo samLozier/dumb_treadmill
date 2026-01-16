@@ -5,6 +5,11 @@ struct SavingWorkoutView: View {
     @EnvironmentObject var workoutManager: WorkoutManager
     @Environment(\.dismiss) private var dismiss
     @State private var saveComplete = false
+    @AppStorage("distanceUnit") private var distanceUnitRaw: String = DistanceUnit.miles.rawValue
+
+    private var distanceUnit: DistanceUnit {
+        DistanceUnit(rawValue: distanceUnitRaw) ?? .miles
+    }
 
     var body: some View {
         let distance = workoutManager.finalDistance
@@ -33,7 +38,7 @@ struct SavingWorkoutView: View {
                         Text("Workout Details:")
                             .font(.headline)
 
-                        Text("Distance: \(distance.formattedDistance())")
+                        Text("Distance: \(distance.formattedDistance(unit: distanceUnit))")
                         Text("Calories Burned: \(totalEnergyBurned.formattedCalories())")
                         Text("Start Time: \(startDate.formatted(date: .numeric, time: .shortened))")
                         Text("End Time: \(endDate.formatted(date: .numeric, time: .shortened))")

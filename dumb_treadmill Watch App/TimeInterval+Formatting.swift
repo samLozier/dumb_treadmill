@@ -8,9 +8,39 @@ extension TimeInterval {
     }
 }
 
+enum DistanceUnit: String, CaseIterable {
+    case miles
+    case kilometers
+
+    var displayName: String {
+        switch self {
+        case .miles:
+            return "Miles"
+        case .kilometers:
+            return "Kilometers"
+        }
+    }
+
+    var shortLabel: String {
+        switch self {
+        case .miles:
+            return "mi"
+        case .kilometers:
+            return "km"
+        }
+    }
+}
+
 extension Double {
-    func formattedDistance() -> String {
-        String(format: "%.2f miles", self)
+    func formattedDistance(unit: DistanceUnit) -> String {
+        let value: Double
+        switch unit {
+        case .miles:
+            value = self / 1609.344
+        case .kilometers:
+            value = self / 1000.0
+        }
+        return String(format: "%.2f %@", value, unit.shortLabel)
     }
 
     func formattedCalories() -> String {

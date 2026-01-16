@@ -9,7 +9,7 @@ class TimerManager: ObservableObject {
 
     private var timer: AnyCancellable?
     private var caloriesPerSecond: Double = 0.1 // Example calories per second (adjust as needed)
-    private var pace: Double = 2.5 // Example pace in meters per second (adjust as needed)
+    private var paceMetersPerSecond: Double = 1.0
 
     func start(pace: Double, caloriesPerSecond: Double) {
         timer?.cancel()
@@ -18,7 +18,7 @@ class TimerManager: ObservableObject {
         distance = 0.0
         totalEnergyBurned = 0.0
 
-        self.pace = pace / 3600.0
+        self.paceMetersPerSecond = pace * 1609.344 / 3600.0
         self.caloriesPerSecond = caloriesPerSecond
 
         timer = Timer.publish(every: 1, on: .main, in: .common)
@@ -26,7 +26,7 @@ class TimerManager: ObservableObject {
             .sink { [weak self] _ in
                 guard let self = self else { return }
                 self.elapsedTime += 1
-                self.distance += self.pace
+                self.distance += self.paceMetersPerSecond
                 self.totalEnergyBurned += self.caloriesPerSecond
             }
     }
@@ -42,7 +42,7 @@ class TimerManager: ObservableObject {
             .sink { [weak self] _ in
                 guard let self = self else { return }
                 self.elapsedTime += 1
-                self.distance += self.pace
+                self.distance += self.paceMetersPerSecond
                 self.totalEnergyBurned += self.caloriesPerSecond
             }
     }
