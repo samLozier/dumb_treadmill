@@ -9,12 +9,24 @@ struct DuringWorkoutView: View {
     }
 
     var body: some View {
-        VStack {
+        VStack(alignment: .leading, spacing: 6) {
             Text("Workout in Progress")
+                .font(.headline)
+                .frame(maxWidth: .infinity, alignment: .center)
 
-            Text("Heart Rate: \(workoutManager.heartRate, specifier: "%.0f") bpm")
-            Text("Elapsed Time: \(workoutManager.elapsedTime.formatted())")
-            Text("Distance: \(workoutManager.distance.formattedDistance(unit: distanceUnit))")
+            Text("❤️ \(workoutManager.heartRate, specifier: "%.0f") bpm")
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+            Text("⏳ \(workoutManager.elapsedTime.formatted())")
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+            Text("👣 \(workoutManager.distance.formattedDistance(unit: distanceUnit))")
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+
+            PaceControlView(title: "Speed")
+                .environmentObject(workoutManager)
+                .frame(maxWidth: .infinity)
 
             Button(action: {
                 workoutManager.pauseWorkout()
