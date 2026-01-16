@@ -17,8 +17,11 @@ class HealthKitManager: NSObject, ObservableObject {
 
         let heartRateType = HKObjectType.quantityType(forIdentifier: .heartRate)!
         let workoutType = HKObjectType.workoutType()
-        let typesToShare: Set = [workoutType, heartRateType]
-        let typesToRead: Set = [workoutType, heartRateType]
+        let distanceType = HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!
+        let energyType = HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
+
+        let typesToShare: Set = [workoutType, heartRateType, distanceType, energyType]
+        let typesToRead: Set = [workoutType, heartRateType, distanceType, energyType]
 
         healthStore.requestAuthorization(toShare: typesToShare, read: typesToRead) { (success, error) in
             DispatchQueue.main.async {
