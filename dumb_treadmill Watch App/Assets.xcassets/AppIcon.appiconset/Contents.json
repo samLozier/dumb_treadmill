@@ -2,8 +2,7 @@
   "images" : [
     {
       "filename" : "AppIcon.png",
-      "idiom" : "universal",
-      "platform" : "watchos",
+      "idiom" : "watch-marketing",
       "size" : "1024x1024"
     }
   ],
