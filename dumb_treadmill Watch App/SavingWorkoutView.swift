@@ -58,10 +58,12 @@ struct SavingWorkoutView: View {
 
                     if workoutManager.canSaveWorkoutEffort {
                         VStack(spacing: 12) {
-                            Text("How hard was it?")
-                                .font(.headline)
+                            Text("💪 Effort")
+                                .font(.subheadline)
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.8)
 
-                            Stepper("Effort: \(effort)", value: $effort, in: 1...10)
+                            Stepper("Effort \(effort)", value: $effort, in: 1...10)
 
                             if isSavingEffort {
                                 ProgressView("Saving effort...")
