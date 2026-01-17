@@ -21,7 +21,7 @@ struct PaceControlView: View {
                     from: 0.5,
                     through: 12.0,
                     by: 0.1,
-                    sensitivity: .medium,
+                    sensitivity: .low,
                     isContinuous: true,
                     isHapticFeedbackEnabled: true
                 )
