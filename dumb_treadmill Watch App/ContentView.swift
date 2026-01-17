@@ -14,12 +14,8 @@ struct ContentView: View {
                     DuringWorkoutView()
                         .environmentObject(workoutManager)
                 case .paused:
-                    PausedView(
-                        onFinish: {
-                            workoutManager.finishWorkout(onComplete: {})
-                        }
-                    )
-                    .environmentObject(workoutManager)
+                    PausedView()
+                        .environmentObject(workoutManager)
                 case .saving:
                     SavingWorkoutView()
                         .environmentObject(workoutManager)

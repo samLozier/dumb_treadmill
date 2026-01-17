@@ -24,9 +24,10 @@ struct DuringWorkoutView: View {
                 .lineLimit(1)
                 .minimumScaleFactor(0.7)
 
-            PaceControlView(title: "Speed")
-                .environmentObject(workoutManager)
-                .frame(maxWidth: .infinity)
+            NavigationLink("Adjust Speed") {
+                PaceControlView(title: "Speed")
+                    .environmentObject(workoutManager)
+            }
 
             Button(action: {
                 workoutManager.pauseWorkout()

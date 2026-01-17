@@ -179,6 +179,7 @@ class WorkoutManager: ObservableObject {
             timeoutWorkItem.cancel()
 
             DispatchQueue.main.async {
+                self.workoutState = .saving
                 self.finalWorkout = workout
                 self.saveCompleted = true
                 onComplete()

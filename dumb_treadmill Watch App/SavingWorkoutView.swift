@@ -35,14 +35,23 @@ struct SavingWorkoutView: View {
                     .multilineTextAlignment(.center)
 
                 if workoutManager.saveCompleted {
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("Workout Details:")
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("Workout Saved")
                             .font(.headline)
+                            .frame(maxWidth: .infinity, alignment: .center)
 
-                        Text("Distance: \(distance.formattedDistance(unit: distanceUnit))")
-                        Text("Calories Burned: \(totalEnergyBurned.formattedCalories())")
-                        Text("Start Time: \(startDate.formatted(date: .numeric, time: .shortened))")
-                        Text("End Time: \(endDate.formatted(date: .numeric, time: .shortened))")
+                        Text("👣 \(distance.formattedDistance(unit: distanceUnit))")
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.7)
+                        Text("🔥 \(totalEnergyBurned.formattedCalories())")
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.7)
+                        Text("▶️ \(startDate.formatted(date: .numeric, time: .shortened))")
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.7)
+                        Text("⏹️ \(endDate.formatted(date: .numeric, time: .shortened))")
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.7)
                     }
                     .padding()
                     .foregroundColor(.gray)
