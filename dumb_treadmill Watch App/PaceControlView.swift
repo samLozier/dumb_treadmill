@@ -14,23 +14,26 @@ struct PaceControlView: View {
                 .font(.headline)
             Text("\(pendingPace, specifier: "%.1f") mph")
                 .font(.title2)
+                .focusable(true)
+                .focused($isFocused)
+                .digitalCrownRotation(
+                    $pendingPace,
+                    from: 0.5,
+                    through: 12.0,
+                    by: 0.1,
+                    sensitivity: .medium,
+                    isContinuous: true,
+                    isHapticFeedbackEnabled: true
+                )
         }
-        .focusable(true)
-        .focused($isFocused)
-        .digitalCrownRotation(
-            $pendingPace,
-            from: 0.5,
-            through: 12.0,
-            by: 0.1,
-            sensitivity: .medium,
-            isContinuous: true,
-            isHapticFeedbackEnabled: true
-        )
         .onAppear {
             pendingPace = workoutManager.currentPaceMph
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 isFocused = true
             }
+        }
+        .onDisappear {
+            isFocused = false
         }
         .onChange(of: pendingPace) { _, newValue in
             schedulePaceUpdate(newValue)

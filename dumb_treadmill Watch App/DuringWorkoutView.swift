@@ -23,6 +23,9 @@ struct DuringWorkoutView: View {
             Text("👣 \(workoutManager.distance.formattedDistance(unit: distanceUnit))")
                 .lineLimit(1)
                 .minimumScaleFactor(0.7)
+            Text("🏃 \(workoutManager.currentPaceMph, specifier: "%.1f") mph")
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
 
             NavigationLink("Adjust Speed") {
                 PaceControlView(title: "Speed")
