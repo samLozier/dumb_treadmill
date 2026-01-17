@@ -54,7 +54,7 @@ struct PausedView: View {
                 workoutManager.finishWorkout(onComplete: {})
             }
             Button("Discard", role: .destructive) {
-                workoutManager.reset()
+                workoutManager.discardWorkout()
             }
             Button("Cancel", role: .cancel) { }
         } message: {

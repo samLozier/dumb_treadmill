@@ -190,6 +190,19 @@ class HealthKitManager: NSObject, ObservableObject {
             }
         }
     }
+
+    func discardWorkout() {
+        workoutSession?.end()
+        workoutBuilder?.discardWorkout { success, error in
+            if let error = error {
+                print("Error discarding workout: \(error.localizedDescription)")
+                return
+            }
+            print("Workout discarded: \(success)")
+        }
+        workoutBuilder = nil
+        workoutSession = nil
+    }
 }
 
 // MARK: - HKWorkoutSessionDelegate

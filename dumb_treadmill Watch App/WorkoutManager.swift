@@ -209,6 +209,13 @@ class WorkoutManager: ObservableObject {
         reset()
     }
 
+    func discardWorkout() {
+        timerManager.stop()
+        heartRateManager.stopHeartRateQuery()
+        healthKitManager.discardWorkout()
+        reset()
+    }
+
     private func caloriesPerSecondForPace(_ paceMph: Double) -> Double {
         guard paceMph > 0 else {
             return 0
