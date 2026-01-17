@@ -7,6 +7,7 @@ struct SavingWorkoutView: View {
     @AppStorage("lastEffort") private var lastEffort: Int = 0
     @State private var effort: Int = 5
     @State private var isSavingEffort = false
+    @State private var showEffortPrompt = false
 
     private var distanceUnit: DistanceUnit {
         DistanceUnit(rawValue: distanceUnitRaw) ?? .miles
@@ -57,32 +58,14 @@ struct SavingWorkoutView: View {
                     .foregroundColor(.gray)
 
                     if workoutManager.canSaveWorkoutEffort {
-                        VStack(spacing: 12) {
-                            Text("💪 Effort")
-                                .font(.subheadline)
-                                .lineLimit(1)
-                                .minimumScaleFactor(0.8)
+                        VStack(spacing: 8) {
+                            Button("Add Effort") {
+                                showEffortPrompt = true
+                            }
+                            .buttonStyle(.borderedProminent)
 
-                            Stepper("Effort \(effort)", value: $effort, in: 1...10)
-
-                            if isSavingEffort {
-                                ProgressView("Saving effort...")
-                            } else {
-                                Button("Save Effort") {
-                                    isSavingEffort = true
-                                    workoutManager.saveWorkoutEffort(score: Double(effort)) { success in
-                                        if success {
-                                            lastEffort = effort
-                                        }
-                                        isSavingEffort = false
-                                        finishSaving()
-                                    }
-                                }
-                                .buttonStyle(.borderedProminent)
-
-                                Button("Skip") {
-                                    finishSaving()
-                                }
+                            Button("Skip") {
+                                finishSaving()
                             }
                         }
                         .padding()
@@ -100,10 +83,72 @@ struct SavingWorkoutView: View {
         .onAppear {
             workoutManager.saveCompleted = false
             effort = max(1, min(lastEffort == 0 ? 5 : lastEffort, 10))
+            showEffortPrompt = false
+        }
+        .onChange(of: workoutManager.saveCompleted) { _, newValue in
+            guard newValue, workoutManager.canSaveWorkoutEffort else {
+                return
+            }
+            showEffortPrompt = true
+        }
+        .sheet(isPresented: $showEffortPrompt) {
+            EffortPromptView(
+                effort: $effort,
+                isSaving: isSavingEffort,
+                onSave: {
+                    isSavingEffort = true
+                    workoutManager.saveWorkoutEffort(score: Double(effort)) { success in
+                        if success {
+                            lastEffort = effort
+                        }
+                        isSavingEffort = false
+                        finishSaving()
+                    }
+                },
+                onSkip: {
+                    finishSaving()
+                }
+            )
         }
     }
 
     private func finishSaving() {
         workoutManager.completeSaving()
+    }
+}
+
+private struct EffortPromptView: View {
+    @Binding var effort: Int
+    let isSaving: Bool
+    let onSave: () -> Void
+    let onSkip: () -> Void
+
+    var body: some View {
+        VStack(spacing: 10) {
+            Text("💪 Effort")
+                .font(.headline)
+
+            Picker("Effort", selection: $effort) {
+                ForEach(1...10, id: \.self) { value in
+                    Text("\(value)")
+                        .tag(value)
+                }
+            }
+            .pickerStyle(.wheel)
+
+            if isSaving {
+                ProgressView("Saving effort...")
+            } else {
+                Button("Save") {
+                    onSave()
+                }
+                .buttonStyle(.borderedProminent)
+
+                Button("Skip") {
+                    onSkip()
+                }
+            }
+        }
+        .padding()
     }
 }
