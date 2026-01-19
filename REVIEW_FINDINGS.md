@@ -28,4 +28,4 @@
 8. [x] Replace brittle UI test string matching with accessibility identifiers for key controls and screens. (`dumb_treadmill Watch AppUITests/dumb_treadmill_Watch_AppUITests.swift`)
 9. [x] Remove placeholder unit tests or make them assert real behavior. (`dumb_treadmill Watch AppTests/dumb_treadmill_Watch_AppTests.swift`)
 10. [ ] Require explicit simulator selection in `scripts/run-tests.sh` to avoid flakiness with “Any watchOS Simulator Device.” (`scripts/run-tests.sh`)
-11. [ ] Add a short README with build/run/test instructions and simulator/runtime prerequisites. (new `README.md`)
+11. [x] Add a short README with build/run/test instructions and simulator/runtime prerequisites. (new `README.md`)
