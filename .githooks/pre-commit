@@ -1,0 +1,4 @@
+#!/bin/bash
+set -euo pipefail
+
+echo "Pre-commit: skipping tests (run ./scripts/run-tests.sh or rely on pre-push)."
