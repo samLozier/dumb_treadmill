@@ -359,6 +359,7 @@ class WorkoutManager: ObservableObject {
         let deltaEnergy = totalEnergyBurned - lastRecordedEnergy
 
         guard deltaDistance > 0 || deltaEnergy > 0 else {
+            lastSampleDate = now
             return
         }
 
