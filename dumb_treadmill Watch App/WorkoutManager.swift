@@ -109,7 +109,7 @@ class WorkoutManager: ObservableObject {
         heartRateManager.startHeartRateQuery()
     }
 
-    func startWorkout(pace: Double, caloriesPerSecond: Double = 0.1) {
+    func startWorkout(pace: Double) {
         let calculatedCalories = caloriesPerSecondForPace(pace)
         currentPaceMph = pace
         self.caloriesPerSecond = calculatedCalories
