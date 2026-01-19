@@ -10,7 +10,7 @@ class HealthKitManager: NSObject, ObservableObject {
     // Request authorization to read and write HealthKit data
     func requestAuthorization(completion: @escaping (Bool) -> Void) {
         guard HKHealthStore.isHealthDataAvailable() else {
-            print("Health data is not available on this device.")
+            AppLog.healthKit.error("Health data is not available on this device.")
             completion(false)
             return
         }
@@ -36,7 +36,7 @@ class HealthKitManager: NSObject, ObservableObject {
         healthStore.requestAuthorization(toShare: typesToShare, read: typesToRead) { (success, error) in
             DispatchQueue.main.async {
                 if let error = error {
-                    print("HealthKit authorization error: \(error.localizedDescription)")
+                    AppLog.healthKit.error("Authorization error: \(error.localizedDescription)")
                     self.isAuthorized = false
                     completion(false)
                     return
@@ -50,12 +50,12 @@ class HealthKitManager: NSObject, ObservableObject {
 
                 self.isAuthorized = isHeartRateAuthorized && isWorkoutAuthorized
 
-                print("Authorization status — Heart Rate: \(heartRateStatus.rawValue), Workout: \(workoutStatus.rawValue)")
+                AppLog.healthKit.info("Authorization status — Heart Rate: \(heartRateStatus.rawValue), Workout: \(workoutStatus.rawValue)")
 
                 if self.isAuthorized {
-                    print("HealthKit authorization succeeded for all types.")
+                    AppLog.healthKit.info("Authorization succeeded for all types.")
                 } else {
-                    print("HealthKit not fully authorized. HeartRate (read or share): \(isHeartRateAuthorized), Workout: \(isWorkoutAuthorized)")
+                    AppLog.healthKit.info("Authorization incomplete. HeartRate: \(isHeartRateAuthorized), Workout: \(isWorkoutAuthorized)")
                 }
 
                 completion(self.isAuthorized)
@@ -66,7 +66,7 @@ class HealthKitManager: NSObject, ObservableObject {
     // Start a workout session
     func startWorkout() {
         guard isAuthorized, HKHealthStore.isHealthDataAvailable() else {
-            print("HealthKit not authorized or data unavailable.")
+            AppLog.healthKit.error("Not authorized or data unavailable.")
             return
         }
 
@@ -83,46 +83,45 @@ class HealthKitManager: NSObject, ObservableObject {
             workoutSession?.startActivity(with: Date())
             workoutBuilder?.beginCollection(withStart: Date()) { (success, error) in
                 if let error = error {
-                    print("Error starting workout collection: \(error.localizedDescription)")
+                    AppLog.healthKit.error("Start collection error: \(error.localizedDescription)")
                 } else {
-                    print("Workout session and builder started successfully")
+                    AppLog.healthKit.info("Workout session and builder started.")
                 }
             }
         } catch {
-            print("Failed to start workout session: \(error.localizedDescription)")
+            AppLog.healthKit.error("Failed to start workout session: \(error.localizedDescription)")
         }
     }
 
     // End the workout and save it to HealthKit
     func endWorkout(startDate: Date, endDate: Date, completion: @escaping (HKWorkout?) -> Void) {
-        print("Ending workout with startDate: \(startDate), endDate: \(endDate)")
+        AppLog.healthKit.info("Ending workout start=\(startDate) end=\(endDate)")
 
         workoutSession?.end()
 
         guard let workoutBuilder = workoutBuilder else {
-            print("Workout builder missing; cannot finish workout.")
+            AppLog.healthKit.error("Workout builder missing; cannot finish workout.")
             completion(nil)
             return
         }
 
-        print("Ending workout collection...")
+        AppLog.healthKit.info("Ending workout collection.")
         workoutBuilder.endCollection(withEnd: endDate) { success, error in
             if let error = error {
-                print("Error ending workout collection: \(error.localizedDescription)")
+                AppLog.healthKit.error("End collection error: \(error.localizedDescription)")
                 completion(nil)
                 return
             }
 
-            print("Workout collection ended successfully. Proceeding to finish workout...")
+            AppLog.healthKit.info("Collection ended. Finishing workout.")
             workoutBuilder.finishWorkout { workout, error in
-                // Debug point before finishing
-                print("Attempting to finish the workout...")
+                AppLog.healthKit.info("Finishing workout.")
 
                 if let error = error {
-                    print("Error finishing workout: \(error.localizedDescription)")
+                    AppLog.healthKit.error("Finish error: \(error.localizedDescription)")
                     completion(nil)
                 } else {
-                    print("Workout successfully saved: \(String(describing: workout))")
+                    AppLog.healthKit.info("Workout saved: \(String(describing: workout))")
                     completion(workout)
                 }
             }
@@ -146,7 +145,7 @@ class HealthKitManager: NSObject, ObservableObject {
 
         healthStore.save(sample) { success, error in
             if let error = error {
-                print("Error saving effort sample: \(error.localizedDescription)")
+                AppLog.healthKit.error("Save effort error: \(error.localizedDescription)")
             }
 
             guard success else {
@@ -158,7 +157,7 @@ class HealthKitManager: NSObject, ObservableObject {
 
             self.healthStore.relateWorkoutEffortSample(sample, with: workout, activity: nil) { relateSuccess, relateError in
                 if let relateError = relateError {
-                    print("Error relating effort sample: \(relateError.localizedDescription)")
+                    AppLog.healthKit.error("Relate effort error: \(relateError.localizedDescription)")
                 }
 
                 DispatchQueue.main.async {
@@ -179,19 +178,19 @@ class HealthKitManager: NSObject, ObservableObject {
 // MARK: - HKWorkoutSessionDelegate
 extension HealthKitManager: HKWorkoutSessionDelegate {
     func workoutSession(_ workoutSession: HKWorkoutSession, didChangeTo toState: HKWorkoutSessionState, from fromState: HKWorkoutSessionState, date: Date) {
-        print("Workout session changed from \(fromState.rawValue) to \(toState.rawValue) at \(date)")
+        AppLog.healthKit.info("Workout session state \(fromState.rawValue) -> \(toState.rawValue) at \(date)")
     }
 
     func workoutSession(_ workoutSession: HKWorkoutSession, didFailWithError error: Error) {
-        print("Workout session failed: \(error.localizedDescription)")
+        AppLog.healthKit.error("Workout session failed: \(error.localizedDescription)")
     }
     // Stream samples to the active workout builder
     func add(samples: [HKSample]) {
         workoutBuilder?.add(samples) { success, error in
             if let error = error {
-                print("Error adding samples: \(error.localizedDescription)")
+                AppLog.healthKit.error("Add sample error: \(error.localizedDescription)")
             } else {
-                print("Successfully added streaming samples.")
+                AppLog.healthKit.debug("Streaming samples added.")
             }
         }
     }

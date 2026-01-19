@@ -23,7 +23,7 @@
 3. [x] Clarify HealthKit save contract: either remove unused `distance`/`totalEnergyBurned` parameters in `endWorkout` or use them consistently (no mixed streaming + total samples). (`dumb_treadmill Watch App/HealthKitManager.swift`)
 4. [x] Use real elapsed deltas for HealthKit sample timestamps rather than `now - 1` to avoid drift and mismatched totals. (`dumb_treadmill Watch App/WorkoutManager.swift`, `dumb_treadmill Watch App/TimerManager.swift`)
 5. [x] Add a shared “metrics stack” view so `DuringWorkoutView` and `PausedView` stay in sync for layout/labels/formatting. (`dumb_treadmill Watch App/DuringWorkoutView.swift`, `dumb_treadmill Watch App/PausedView.swift`)
-6. [ ] Replace `print` statements with `os.Logger` and add a basic logging policy for device builds. (`dumb_treadmill Watch App/HealthKitManager.swift`, `dumb_treadmill Watch App/HeartRateManager.swift`, `dumb_treadmill Watch App/WorkoutManager.swift`)
+6. [x] Replace `print` statements with `os.Logger` and add a basic logging policy for device builds. (`dumb_treadmill Watch App/HealthKitManager.swift`, `dumb_treadmill Watch App/HeartRateManager.swift`, `dumb_treadmill Watch App/WorkoutManager.swift`)
 7. [ ] Consolidate pacing constants (min/max, step, debounce) in a shared config instead of hard‑coding in views/managers. (`dumb_treadmill Watch App/PaceControlView.swift`, `dumb_treadmill Watch App/TimerManager.swift`)
 8. [ ] Replace brittle UI test string matching with accessibility identifiers for key controls and screens. (`dumb_treadmill Watch AppUITests/dumb_treadmill_Watch_AppUITests.swift`)
 9. [ ] Remove placeholder unit tests or make them assert real behavior. (`dumb_treadmill Watch AppTests/dumb_treadmill_Watch_AppTests.swift`)

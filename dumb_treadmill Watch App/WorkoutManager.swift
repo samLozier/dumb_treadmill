@@ -82,7 +82,7 @@ class WorkoutManager: ObservableObject {
 
     func requestAuthorization() {
         guard HKHealthStore.isHealthDataAvailable() else {
-            print("Health data not available on this device.")
+            AppLog.workout.error("Health data not available on this device.")
             healthKitAvailable = false
             return
         }
@@ -91,10 +91,10 @@ class WorkoutManager: ObservableObject {
             DispatchQueue.main.async {
                 self.healthKitAvailable = success
                 if success {
-                    print("HealthKit authorization granted.")
+                    AppLog.workout.info("HealthKit authorization granted.")
                     self.onHealthKitAuthorized()
                 } else {
-                    print("HealthKit authorization failed or not granted.")
+                    AppLog.workout.error("HealthKit authorization failed or not granted.")
                 }
             }
         }
@@ -171,7 +171,7 @@ class WorkoutManager: ObservableObject {
 
         let timeoutWorkItem = DispatchWorkItem {
             if !didComplete {
-                print("Timeout: Failed to save workout in time.")
+                AppLog.workout.error("Timeout: failed to save workout in time.")
                 self.saveState = .failed
                 onComplete()
             }
@@ -338,12 +338,12 @@ class WorkoutManager: ObservableObject {
 
     private func recordSampleData() {
         guard healthKitAvailable else {
-            print("HealthKit not available, skipping sample recording.")
+            AppLog.workout.info("HealthKit not available; skipping sample recording.")
             return
         }
 
         guard healthKitManager.isAuthorized else {
-            print("HealthKit write access not granted, skipping sample recording.")
+            AppLog.workout.info("HealthKit write access not granted; skipping sample recording.")
             return
         }
 

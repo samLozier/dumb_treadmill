@@ -14,9 +14,9 @@ class HeartRateManager: ObservableObject {
     
     // Start heart rate query if HealthKit is authorized
     func startHeartRateQuery() {
-        print("HeartRateManager authorization state: \(healthKitManager.isAuthorized)")
+        AppLog.heartRate.info("Authorization state: \(self.healthKitManager.isAuthorized)")
         guard HKHealthStore.isHealthDataAvailable(), healthKitManager.isAuthorized else {
-            print("HealthKit not authorized for heart rate data.")
+            AppLog.heartRate.error("HealthKit not authorized for heart rate data.")
             return
         }
         
@@ -34,7 +34,7 @@ class HeartRateManager: ObservableObject {
         
         heartRateQuery = HKAnchoredObjectQuery(type: heartRateType, predicate: predicate, anchor: nil, limit: HKObjectQueryNoLimit) { [weak self] query, samples, deletedObjects, newAnchor, error in
             if let error = error {
-                print("Heart rate query error: \(error.localizedDescription)")
+                AppLog.heartRate.error("Query error: \(error.localizedDescription)")
                 return
             }
             self?.updateHeartRate(samples)
@@ -42,7 +42,7 @@ class HeartRateManager: ObservableObject {
         
         heartRateQuery?.updateHandler = { [weak self] query, samples, deletedObjects, newAnchor, error in
             if let error = error {
-                print("Heart rate query update error: \(error.localizedDescription)")
+                AppLog.heartRate.error("Update error: \(error.localizedDescription)")
                 return
             }
             self?.updateHeartRate(samples)
