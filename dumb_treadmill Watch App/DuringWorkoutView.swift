@@ -15,18 +15,13 @@ struct DuringWorkoutView: View {
                 .frame(maxWidth: .infinity, alignment: .center)
                 .accessibilityIdentifier("workoutInProgressTitle")
 
-            Text("❤️ \(workoutManager.heartRate, specifier: "%.0f") bpm")
-                .lineLimit(1)
-                .minimumScaleFactor(0.7)
-            Text("⏳ \(workoutManager.elapsedTime.formatted())")
-                .lineLimit(1)
-                .minimumScaleFactor(0.7)
-            Text("👣 \(workoutManager.distance.formattedDistance(unit: distanceUnit))")
-                .lineLimit(1)
-                .minimumScaleFactor(0.7)
-            Text("🏃 \(workoutManager.currentPaceMph, specifier: "%.1f") mph")
-                .lineLimit(1)
-                .minimumScaleFactor(0.7)
+            WorkoutMetricsView(
+                heartRate: workoutManager.heartRate,
+                elapsedTime: workoutManager.elapsedTime,
+                distance: workoutManager.distance,
+                paceMph: workoutManager.currentPaceMph,
+                distanceUnit: distanceUnit
+            )
 
             NavigationLink("Adjust Speed") {
                 PaceControlView(title: "Speed")

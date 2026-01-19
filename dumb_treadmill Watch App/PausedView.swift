@@ -17,15 +17,13 @@ struct PausedView: View {
                     .frame(maxWidth: .infinity, alignment: .center)
                     .accessibilityIdentifier("workoutPausedTitle")
 
-                Text("❤️ \(workoutManager.heartRate, specifier: "%.0f") bpm")
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.7)
-                Text("⏳ \(workoutManager.elapsedTime.formatted())")
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.7)
-                Text("👣 \(workoutManager.distance.formattedDistance(unit: distanceUnit))")
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.7)
+                WorkoutMetricsView(
+                    heartRate: workoutManager.heartRate,
+                    elapsedTime: workoutManager.elapsedTime,
+                    distance: workoutManager.distance,
+                    paceMph: nil,
+                    distanceUnit: distanceUnit
+                )
 
                 if workoutManager.workoutState == .saving {
                     ProgressView("Saving Workout...")
