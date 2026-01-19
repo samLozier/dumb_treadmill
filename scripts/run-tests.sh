@@ -12,6 +12,5 @@ else
 fi
 
 xcodebuild -scheme "${SCHEME}" -destination "${DESTINATION}" \
-    -parallel-testing-enabled YES \
-    -parallel-testing-worker-count 4 \
+    -parallel-testing-enabled NO \
     test
