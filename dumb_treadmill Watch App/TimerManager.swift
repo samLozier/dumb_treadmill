@@ -5,7 +5,6 @@ class TimerManager: ObservableObject {
     @Published var elapsedTime: TimeInterval = 0
     @Published var distance: Double = 0.0
     @Published var totalEnergyBurned: Double = 0.0
-    var startDate: Date? // New property to track the workout start time
 
     private var timer: AnyCancellable?
     private var caloriesPerSecond: Double = 0.1 // Example calories per second (adjust as needed)
@@ -14,7 +13,6 @@ class TimerManager: ObservableObject {
 
     func start(pace: Double, caloriesPerSecond: Double, useTimer: Bool = true) {
         timer?.cancel()
-        startDate = Date()
         elapsedTime = 0
         distance = 0.0
         totalEnergyBurned = 0.0
@@ -57,7 +55,6 @@ class TimerManager: ObservableObject {
         elapsedTime = 0
         distance = 0.0
         totalEnergyBurned = 0.0
-        startDate = nil // Clear the start date when the workout is reset
         timer?.cancel()
         lastTickDate = nil
     }

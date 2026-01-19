@@ -93,6 +93,14 @@ class HealthKitManager: NSObject, ObservableObject {
         }
     }
 
+    func pauseWorkout() {
+        workoutSession?.pause()
+    }
+
+    func resumeWorkout() {
+        workoutSession?.resume()
+    }
+
     // End the workout and save it to HealthKit
     func endWorkout(startDate: Date, endDate: Date, completion: @escaping (HKWorkout?) -> Void) {
         AppLog.healthKit.info("Ending workout start=\(startDate) end=\(endDate)")

@@ -33,5 +33,5 @@
 ## Robustness & Professional Polish Checklist (Prioritized)
 1. [x] Make HealthKit speed samples movement‑only and exclude pause gaps from sampling intervals. (`dumb_treadmill Watch App/WorkoutManager.swift`)
 2. [x] Remove or wire `caloriesPerSecond` parameter in `startWorkout` to avoid misleading callers. (`dumb_treadmill Watch App/WorkoutManager.swift`)
-3. [ ] Remove or make `TimerManager.startDate` authoritative to avoid drift between timers and saved workouts. (`dumb_treadmill Watch App/TimerManager.swift`, `dumb_treadmill Watch App/WorkoutManager.swift`)
+3. [x] Remove or make `TimerManager.startDate` authoritative to avoid drift between timers and saved workouts. (`dumb_treadmill Watch App/TimerManager.swift`, `dumb_treadmill Watch App/WorkoutManager.swift`)
 4. [ ] Remove the no‑assert UI test or move HealthKit disable flag to `setUpWithError` for stability. (`dumb_treadmill Watch AppUITests/dumb_treadmill_Watch_AppUITests.swift`)

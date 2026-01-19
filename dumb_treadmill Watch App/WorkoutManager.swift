@@ -51,6 +51,7 @@ class WorkoutManager: ObservableObject {
     private var lastRecordedDistance: Double = 0
     private var lastRecordedEnergy: Double = 0
     private var lastSampleDate: Date?
+    private var workoutStartDate: Date?
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -114,6 +115,7 @@ class WorkoutManager: ObservableObject {
         currentPaceMph = pace
         self.caloriesPerSecond = calculatedCalories
         workoutState = .active
+        workoutStartDate = Date()
 
         healthKitManager.startWorkout()
         heartRateManager.startHeartRateQuery()
@@ -133,6 +135,7 @@ class WorkoutManager: ObservableObject {
         workoutState = .paused
         timerManager.pause()
         heartRateManager.stopHeartRateQuery()
+        healthKitManager.pauseWorkout()
         lastSampleDate = nil
     }
 
@@ -140,6 +143,7 @@ class WorkoutManager: ObservableObject {
         workoutState = .active
         timerManager.resume()
         heartRateManager.startHeartRateQuery()
+        healthKitManager.resumeWorkout()
         lastSampleDate = Date()
     }
 
@@ -160,8 +164,8 @@ class WorkoutManager: ObservableObject {
         timerManager.stop()
         heartRateManager.stopHeartRateQuery()
 
-        let startDate = Date().addingTimeInterval(-elapsedTime)
         let endDate = Date()
+        let startDate = workoutStartDate ?? endDate.addingTimeInterval(-elapsedTime)
         var didComplete = false
 
         self.finalStartDate = startDate
@@ -210,6 +214,7 @@ class WorkoutManager: ObservableObject {
         segmentStartEnergy = 0
         segmentPaceMph = 0
         lastSampleDate = nil
+        workoutStartDate = nil
     }
 
     func completeSaving() {
@@ -226,6 +231,7 @@ class WorkoutManager: ObservableObject {
     func discardWorkout() {
         timerManager.stop()
         heartRateManager.stopHeartRateQuery()
+        healthKitManager.pauseWorkout()
         healthKitManager.discardWorkout()
         saveState = .idle
         reset()
