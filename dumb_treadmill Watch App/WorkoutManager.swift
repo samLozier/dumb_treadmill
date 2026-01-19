@@ -50,6 +50,7 @@ class WorkoutManager: ObservableObject {
 
     private var lastRecordedDistance: Double = 0
     private var lastRecordedEnergy: Double = 0
+    private var lastSampleDate: Date?
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -123,18 +124,23 @@ class WorkoutManager: ObservableObject {
         segmentStartDistance = 0
         segmentStartEnergy = 0
         segmentPaceMph = pace
+        lastRecordedDistance = 0
+        lastRecordedEnergy = 0
+        lastSampleDate = Date()
     }
 
     func pauseWorkout() {
         workoutState = .paused
         timerManager.pause()
         heartRateManager.stopHeartRateQuery()
+        lastSampleDate = nil
     }
 
     func resumeWorkout() {
         workoutState = .active
         timerManager.resume()
         heartRateManager.startHeartRateQuery()
+        lastSampleDate = Date()
     }
 
     func updatePace(paceMph: Double) {
@@ -203,6 +209,7 @@ class WorkoutManager: ObservableObject {
         segmentStartDistance = 0
         segmentStartEnergy = 0
         segmentPaceMph = 0
+        lastSampleDate = nil
     }
 
     func completeSaving() {
@@ -341,6 +348,13 @@ class WorkoutManager: ObservableObject {
         }
 
         let now = Date()
+        guard let startTime = lastSampleDate else {
+            lastSampleDate = now
+            lastRecordedDistance = distance
+            lastRecordedEnergy = totalEnergyBurned
+            return
+        }
+
         let deltaDistance = distance - lastRecordedDistance
         let deltaEnergy = totalEnergyBurned - lastRecordedEnergy
 
@@ -351,7 +365,6 @@ class WorkoutManager: ObservableObject {
         let distanceQuantity = HKQuantity(unit: .meter(), doubleValue: deltaDistance)
         let energyQuantity = HKQuantity(unit: .kilocalorie(), doubleValue: deltaEnergy)
 
-        let startTime = now.addingTimeInterval(-1)
         let distanceSample = HKQuantitySample(type: HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning)!, quantity: distanceQuantity, start: startTime, end: now)
         let energySample = HKQuantitySample(type: HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!, quantity: energyQuantity, start: startTime, end: now)
 
@@ -380,5 +393,6 @@ class WorkoutManager: ObservableObject {
 
         lastRecordedDistance = distance
         lastRecordedEnergy = totalEnergyBurned
+        lastSampleDate = now
     }
 }

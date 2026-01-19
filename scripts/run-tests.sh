@@ -11,4 +11,7 @@ else
     DESTINATION="platform=watchOS Simulator,name=Any watchOS Simulator Device"
 fi
 
-xcodebuild -scheme "${SCHEME}" -destination "${DESTINATION}" test
+xcodebuild -scheme "${SCHEME}" -destination "${DESTINATION}" \
+    -parallel-testing-enabled YES \
+    -parallel-testing-worker-count 4 \
+    test
