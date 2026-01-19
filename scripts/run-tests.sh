@@ -8,7 +8,8 @@ if [[ -n "${SIMULATOR_ID:-}" ]]; then
 elif [[ -n "${SIMULATOR_NAME:-}" ]]; then
     DESTINATION="platform=watchOS Simulator,name=${SIMULATOR_NAME}"
 else
-    DESTINATION="platform=watchOS Simulator,name=Any watchOS Simulator Device"
+    echo "Set SIMULATOR_ID or SIMULATOR_NAME to target a watchOS simulator." >&2
+    exit 1
 fi
 
 xcodebuild -scheme "${SCHEME}" -destination "${DESTINATION}" \
