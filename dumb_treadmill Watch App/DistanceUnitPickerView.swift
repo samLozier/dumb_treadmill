@@ -19,5 +19,6 @@ struct DistanceUnitPickerView: View {
         }
         .pickerStyle(.wheel)
         .navigationTitle("Units")
+        .accessibilityIdentifier("distanceUnitPicker")
     }
 }

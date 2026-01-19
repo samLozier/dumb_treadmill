@@ -19,5 +19,6 @@ struct WeightPickerView: View {
         }
         .pickerStyle(.wheel)
         .navigationTitle("Weight")
+        .accessibilityIdentifier("weightPicker")
     }
 }

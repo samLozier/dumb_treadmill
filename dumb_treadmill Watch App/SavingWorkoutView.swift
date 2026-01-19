@@ -26,10 +26,12 @@ struct SavingWorkoutView: View {
                     ProgressView()
                         .scaleEffect(1.5)
                         .padding()
+                        .accessibilityIdentifier("savingProgress")
 
                     Text("Saving Workout...")
                         .font(.title2)
                         .padding()
+                        .accessibilityIdentifier("savingTitle")
 
                     Text("Please wait while we save your workout.")
                         .font(.body)
@@ -41,6 +43,7 @@ struct SavingWorkoutView: View {
                         Text("Workout Saved")
                             .font(.headline)
                             .frame(maxWidth: .infinity, alignment: .center)
+                            .accessibilityIdentifier("saveCompletedTitle")
 
                         Text("👣 \(distance.formattedDistance(unit: distanceUnit))")
                             .lineLimit(1)
@@ -64,10 +67,12 @@ struct SavingWorkoutView: View {
                                 showEffortPrompt = true
                             }
                             .buttonStyle(.borderedProminent)
+                            .accessibilityIdentifier("addEffortButton")
 
                             Button("Skip") {
                                 finishSaving()
                             }
+                            .accessibilityIdentifier("skipEffortButton")
                         }
                         .padding()
                     } else {
@@ -76,12 +81,14 @@ struct SavingWorkoutView: View {
                         }
                         .buttonStyle(.borderedProminent)
                         .padding()
+                        .accessibilityIdentifier("savingDoneButton")
                     }
                 case .failed:
                     VStack(spacing: 12) {
                         Text("Save Failed")
                             .font(.headline)
                             .frame(maxWidth: .infinity, alignment: .center)
+                            .accessibilityIdentifier("saveFailedTitle")
 
                         Text("We couldn’t save this workout. You can try again from the paused screen.")
                             .font(.body)
@@ -92,6 +99,7 @@ struct SavingWorkoutView: View {
                             workoutManager.handleSaveFailure()
                         }
                         .buttonStyle(.borderedProminent)
+                        .accessibilityIdentifier("saveFailureBackButton")
                     }
                     .padding()
                 case .idle:

@@ -23,6 +23,7 @@ struct PreStartView: View {
                             .foregroundColor(.secondary)
                     }
                 }
+                .accessibilityIdentifier("startSpeedLink")
             }
 
             Section {
@@ -36,6 +37,7 @@ struct PreStartView: View {
                             .foregroundColor(.secondary)
                     }
                 }
+                .accessibilityIdentifier("unitsLink")
 
                 NavigationLink {
                     WeightPickerView()
@@ -48,6 +50,7 @@ struct PreStartView: View {
                             .foregroundColor(.secondary)
                     }
                 }
+                .accessibilityIdentifier("weightLink")
             }
 
             Section {
