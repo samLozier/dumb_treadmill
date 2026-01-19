@@ -29,3 +29,9 @@
 9. [x] Remove placeholder unit tests or make them assert real behavior. (`dumb_treadmill Watch AppTests/dumb_treadmill_Watch_AppTests.swift`)
 10. [ ] Require explicit simulator selection in `scripts/run-tests.sh` to avoid flakiness with “Any watchOS Simulator Device.” (`scripts/run-tests.sh`)
 11. [x] Add a short README with build/run/test instructions and simulator/runtime prerequisites. (new `README.md`)
+
+## Robustness & Professional Polish Checklist (Prioritized)
+1. [ ] Make HealthKit speed samples movement‑only and exclude pause gaps from sampling intervals. (`dumb_treadmill Watch App/WorkoutManager.swift`)
+2. [ ] Remove or wire `caloriesPerSecond` parameter in `startWorkout` to avoid misleading callers. (`dumb_treadmill Watch App/WorkoutManager.swift`)
+3. [ ] Remove or make `TimerManager.startDate` authoritative to avoid drift between timers and saved workouts. (`dumb_treadmill Watch App/TimerManager.swift`, `dumb_treadmill Watch App/WorkoutManager.swift`)
+4. [ ] Remove the no‑assert UI test or move HealthKit disable flag to `setUpWithError` for stability. (`dumb_treadmill Watch AppUITests/dumb_treadmill_Watch_AppUITests.swift`)
