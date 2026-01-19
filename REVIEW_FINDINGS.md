@@ -16,3 +16,16 @@
 - Store absolute distance in HealthKit-preferred units (meters).
 - UI should default to miles, with a user preference for miles/kilometers (or meters) for display.
 - Saving workout view should be transient and clear to next screen after save is confirmed.
+
+## Project Cleanup & Standardization Checklist (Prioritized)
+1. [ ] Get testing working end‑to‑end (simulator runtime + reliable `xcodebuild test` run).
+2. [ ] Centralize workout save state and transitions in `WorkoutManager` to avoid UI‑driven state resets or double transitions; `SavingWorkoutView` should be read‑only. (`dumb_treadmill Watch App/WorkoutManager.swift`, `dumb_treadmill Watch App/SavingWorkoutView.swift`)
+3. [ ] Clarify HealthKit save contract: either remove unused `distance`/`totalEnergyBurned` parameters in `endWorkout` or use them consistently (no mixed streaming + total samples). (`dumb_treadmill Watch App/HealthKitManager.swift`)
+4. [ ] Use real elapsed deltas for HealthKit sample timestamps rather than `now - 1` to avoid drift and mismatched totals. (`dumb_treadmill Watch App/WorkoutManager.swift`, `dumb_treadmill Watch App/TimerManager.swift`)
+5. [ ] Add a shared “metrics stack” view so `DuringWorkoutView` and `PausedView` stay in sync for layout/labels/formatting. (`dumb_treadmill Watch App/DuringWorkoutView.swift`, `dumb_treadmill Watch App/PausedView.swift`)
+6. [ ] Replace `print` statements with `os.Logger` and add a basic logging policy for device builds. (`dumb_treadmill Watch App/HealthKitManager.swift`, `dumb_treadmill Watch App/HeartRateManager.swift`, `dumb_treadmill Watch App/WorkoutManager.swift`)
+7. [ ] Consolidate pacing constants (min/max, step, debounce) in a shared config instead of hard‑coding in views/managers. (`dumb_treadmill Watch App/PaceControlView.swift`, `dumb_treadmill Watch App/TimerManager.swift`)
+8. [ ] Replace brittle UI test string matching with accessibility identifiers for key controls and screens. (`dumb_treadmill Watch AppUITests/dumb_treadmill_Watch_AppUITests.swift`)
+9. [ ] Remove placeholder unit tests or make them assert real behavior. (`dumb_treadmill Watch AppTests/dumb_treadmill_Watch_AppTests.swift`)
+10. [ ] Require explicit simulator selection in `scripts/run-tests.sh` to avoid flakiness with “Any watchOS Simulator Device.” (`scripts/run-tests.sh`)
+11. [ ] Add a short README with build/run/test instructions and simulator/runtime prerequisites. (new `README.md`)
