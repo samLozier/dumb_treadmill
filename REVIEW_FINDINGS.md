@@ -19,8 +19,8 @@
 
 ## Project Cleanup & Standardization Checklist (Prioritized)
 1. [x] Get testing working end‑to‑end (simulator runtime + reliable `xcodebuild test` run).
-2. [ ] Centralize workout save state and transitions in `WorkoutManager` to avoid UI‑driven state resets or double transitions; `SavingWorkoutView` should be read‑only. (`dumb_treadmill Watch App/WorkoutManager.swift`, `dumb_treadmill Watch App/SavingWorkoutView.swift`)
-3. [ ] Clarify HealthKit save contract: either remove unused `distance`/`totalEnergyBurned` parameters in `endWorkout` or use them consistently (no mixed streaming + total samples). (`dumb_treadmill Watch App/HealthKitManager.swift`)
+2. [x] Centralize workout save state and transitions in `WorkoutManager` to avoid UI‑driven state resets or double transitions; `SavingWorkoutView` should be read‑only. (`dumb_treadmill Watch App/WorkoutManager.swift`, `dumb_treadmill Watch App/SavingWorkoutView.swift`)
+3. [x] Clarify HealthKit save contract: either remove unused `distance`/`totalEnergyBurned` parameters in `endWorkout` or use them consistently (no mixed streaming + total samples). (`dumb_treadmill Watch App/HealthKitManager.swift`)
 4. [ ] Use real elapsed deltas for HealthKit sample timestamps rather than `now - 1` to avoid drift and mismatched totals. (`dumb_treadmill Watch App/WorkoutManager.swift`, `dumb_treadmill Watch App/TimerManager.swift`)
 5. [ ] Add a shared “metrics stack” view so `DuringWorkoutView` and `PausedView` stay in sync for layout/labels/formatting. (`dumb_treadmill Watch App/DuringWorkoutView.swift`, `dumb_treadmill Watch App/PausedView.swift`)
 6. [ ] Replace `print` statements with `os.Logger` and add a basic logging policy for device builds. (`dumb_treadmill Watch App/HealthKitManager.swift`, `dumb_treadmill Watch App/HeartRateManager.swift`, `dumb_treadmill Watch App/WorkoutManager.swift`)

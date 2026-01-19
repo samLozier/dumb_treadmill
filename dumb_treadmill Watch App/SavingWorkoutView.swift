@@ -17,25 +17,26 @@ struct SavingWorkoutView: View {
         let distance = workoutManager.finalDistance
         let totalEnergyBurned = workoutManager.finalEnergyBurned
         let startDate = workoutManager.finalStartDate
-        let endDate = startDate.addingTimeInterval(workoutManager.elapsedTime)
+        let endDate = workoutManager.finalEndDate
 
         return ScrollView {
             VStack {
-                ProgressView()
-                    .scaleEffect(1.5)
-                    .padding()
+                switch workoutManager.saveState {
+                case .saving:
+                    ProgressView()
+                        .scaleEffect(1.5)
+                        .padding()
 
-                Text("Saving Workout...")
-                    .font(.title2)
-                    .padding()
+                    Text("Saving Workout...")
+                        .font(.title2)
+                        .padding()
 
-                Text("Please wait while we save your workout.")
-                    .font(.body)
-                    .foregroundColor(.gray)
-                    .padding(.horizontal)
-                    .multilineTextAlignment(.center)
-
-                if workoutManager.saveCompleted {
+                    Text("Please wait while we save your workout.")
+                        .font(.body)
+                        .foregroundColor(.gray)
+                        .padding(.horizontal)
+                        .multilineTextAlignment(.center)
+                case .completed:
                     VStack(alignment: .leading, spacing: 6) {
                         Text("Workout Saved")
                             .font(.headline)
@@ -76,17 +77,35 @@ struct SavingWorkoutView: View {
                         .buttonStyle(.borderedProminent)
                         .padding()
                     }
+                case .failed:
+                    VStack(spacing: 12) {
+                        Text("Save Failed")
+                            .font(.headline)
+                            .frame(maxWidth: .infinity, alignment: .center)
+
+                        Text("We couldn’t save this workout. You can try again from the paused screen.")
+                            .font(.body)
+                            .foregroundColor(.gray)
+                            .multilineTextAlignment(.center)
+
+                        Button("Back to Paused") {
+                            workoutManager.handleSaveFailure()
+                        }
+                        .buttonStyle(.borderedProminent)
+                    }
+                    .padding()
+                case .idle:
+                    EmptyView()
                 }
             }
             .padding()
         }
         .onAppear {
-            workoutManager.saveCompleted = false
             effort = max(1, min(lastEffort == 0 ? 5 : lastEffort, 10))
             showEffortPrompt = false
         }
-        .onChange(of: workoutManager.saveCompleted) { _, newValue in
-            guard newValue, workoutManager.canSaveWorkoutEffort else {
+        .onChange(of: workoutManager.saveState) { _, newValue in
+            guard newValue == .completed, workoutManager.canSaveWorkoutEffort else {
                 return
             }
             showEffortPrompt = true
@@ -124,9 +143,12 @@ private struct EffortPromptView: View {
     let onSkip: () -> Void
 
     var body: some View {
-        VStack(spacing: 10) {
+        VStack(spacing: 8) {
             Text("💪 Effort")
-                .font(.headline)
+                .font(.subheadline)
+            Text("How hard did it feel?")
+                .font(.caption2)
+                .foregroundColor(.secondary)
 
             Picker("Effort", selection: $effort) {
                 ForEach(1...10, id: \.self) { value in
@@ -134,7 +156,10 @@ private struct EffortPromptView: View {
                         .tag(value)
                 }
             }
+            .labelsHidden()
             .pickerStyle(.wheel)
+            .frame(height: 90)
+            .clipped()
 
             if isSaving {
                 ProgressView("Saving effort...")

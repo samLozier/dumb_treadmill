@@ -10,8 +10,28 @@ import Testing
 
 struct dumb_treadmill_Watch_AppTests {
 
-    @Test func example() async throws {
-        // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+    @Test func handleSaveFailureResetsToPaused() {
+        let manager = WorkoutManager()
+        manager.workoutState = .saving
+        manager.saveState = .saving
+
+        manager.handleSaveFailure()
+
+        #expect(manager.saveState == .idle)
+        #expect(manager.workoutState == .paused)
+    }
+
+    @Test func completeSavingResetsState() {
+        let manager = WorkoutManager()
+        manager.workoutState = .saving
+        manager.saveState = .completed
+        manager.distance = 123.0
+
+        manager.completeSaving()
+
+        #expect(manager.saveState == .idle)
+        #expect(manager.workoutState == .idle)
+        #expect(manager.distance == 0)
     }
 
 }

@@ -94,59 +94,36 @@ class HealthKitManager: NSObject, ObservableObject {
     }
 
     // End the workout and save it to HealthKit
-    func endWorkout(startDate: Date, endDate: Date, distance: Double, totalEnergyBurned: Double, completion: @escaping (HKWorkout?) -> Void) {
-        // Ensure to update the workout with actual distance and energy burned values from the tracked session
-        print("Ending workout with startDate: \(startDate), endDate: \(endDate), distance: \(distance), energy burned: \(totalEnergyBurned)")
+    func endWorkout(startDate: Date, endDate: Date, completion: @escaping (HKWorkout?) -> Void) {
+        print("Ending workout with startDate: \(startDate), endDate: \(endDate)")
 
-        let distanceQuantity = HKQuantity(unit: .meter(), doubleValue: distance)
-        let energyQuantity = HKQuantity(unit: .kilocalorie(), doubleValue: totalEnergyBurned)
-        
-        // Create HKQuantitySample objects with the actual start and end times
-        let distanceSample = HKQuantitySample(
-            type: HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!,
-            quantity: distanceQuantity,
-            start: startDate,
-            end: endDate
-        )
-        
-        let energySample = HKQuantitySample(
-            type: HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!,
-            quantity: energyQuantity,
-            start: startDate,
-            end: endDate
-        )
-        
-        // Add the samples to the workout builder
-        workoutBuilder?.add([distanceSample, energySample]) { success, error in
-            print("Attempting to add samples to workout builder...")
-            
+        workoutSession?.end()
+
+        guard let workoutBuilder = workoutBuilder else {
+            print("Workout builder missing; cannot finish workout.")
+            completion(nil)
+            return
+        }
+
+        print("Ending workout collection...")
+        workoutBuilder.endCollection(withEnd: endDate) { success, error in
             if let error = error {
-                print("Error adding workout data: \(error.localizedDescription)")
+                print("Error ending workout collection: \(error.localizedDescription)")
                 completion(nil)
                 return
             }
-            
-            print("Workout data added successfully. Ending workout collection...")
-            
-            self.workoutBuilder?.endCollection(withEnd: endDate) { success, error in
+
+            print("Workout collection ended successfully. Proceeding to finish workout...")
+            workoutBuilder.finishWorkout { workout, error in
+                // Debug point before finishing
+                print("Attempting to finish the workout...")
+
                 if let error = error {
-                    print("Error ending workout collection: \(error.localizedDescription)")
+                    print("Error finishing workout: \(error.localizedDescription)")
                     completion(nil)
-                    return
-                }
-                
-                print("Workout collection ended successfully. Proceeding to finish workout...")
-                self.workoutBuilder?.finishWorkout { workout, error in
-                    // Debug point before finishing
-                    print("Attempting to finish the workout...")
-                    
-                    if let error = error {
-                        print("Error finishing workout: \(error.localizedDescription)")
-                        completion(nil)
-                    } else {
-                        print("Workout successfully saved: \(String(describing: workout))")
-                        completion(workout)
-                    }
+                } else {
+                    print("Workout successfully saved: \(String(describing: workout))")
+                    completion(workout)
                 }
             }
         }

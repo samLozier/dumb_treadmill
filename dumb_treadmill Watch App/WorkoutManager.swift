@@ -7,6 +7,10 @@ enum WorkoutState {
     case idle, active, paused, saving
 }
 
+enum SaveState {
+    case idle, saving, completed, failed
+}
+
 struct WorkoutSegment: Identifiable {
     let id = UUID()
     let paceMph: Double
@@ -22,13 +26,13 @@ class WorkoutManager: ObservableObject {
     @Published var distance: Double = 0
     @Published var totalEnergyBurned: Double = 0
     @Published var workoutState: WorkoutState = .idle
-    @Published var saveError: Bool = false
+    @Published var saveState: SaveState = .idle
     @Published var healthKitAvailable: Bool = false
 
     @Published var finalStartDate: Date = Date()
+    @Published var finalEndDate: Date = Date()
     @Published var finalDistance: Double = 0
     @Published var finalEnergyBurned: Double = 0
-    @Published var saveCompleted: Bool = false
     @Published var finalWorkout: HKWorkout?
     @Published var currentPaceMph: Double = 3.0
     @Published var segments: [WorkoutSegment] = []
@@ -142,7 +146,7 @@ class WorkoutManager: ObservableObject {
 
     func finishWorkout(onComplete: @escaping () -> Void) {
         workoutState = .saving
-        saveCompleted = false
+        saveState = .saving
         finalWorkout = nil
 
         finalizeCurrentSegment()
@@ -155,33 +159,31 @@ class WorkoutManager: ObservableObject {
         var didComplete = false
 
         self.finalStartDate = startDate
+        self.finalEndDate = endDate
         self.finalDistance = distance
         self.finalEnergyBurned = totalEnergyBurned
 
         let timeoutWorkItem = DispatchWorkItem {
             if !didComplete {
                 print("Timeout: Failed to save workout in time.")
-                self.workoutState = .paused
-                self.saveError = true
+                self.saveState = .failed
                 onComplete()
             }
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 10, execute: timeoutWorkItem)
 
-        healthKitManager.endWorkout(
-            startDate: startDate,
-            endDate: endDate,
-            distance: distance,
-            totalEnergyBurned: totalEnergyBurned
-        ) { workout in
+        healthKitManager.endWorkout(startDate: startDate, endDate: endDate) { workout in
             didComplete = true
             timeoutWorkItem.cancel()
 
             DispatchQueue.main.async {
-                self.workoutState = .saving
                 self.finalWorkout = workout
-                self.saveCompleted = true
+                if workout == nil {
+                    self.saveState = .failed
+                } else {
+                    self.saveState = .completed
+                }
                 onComplete()
             }
         }
@@ -204,15 +206,21 @@ class WorkoutManager: ObservableObject {
     }
 
     func completeSaving() {
-        saveCompleted = false
+        saveState = .idle
         finalWorkout = nil
         reset()
+    }
+
+    func handleSaveFailure() {
+        saveState = .idle
+        workoutState = .paused
     }
 
     func discardWorkout() {
         timerManager.stop()
         heartRateManager.stopHeartRateQuery()
         healthKitManager.discardWorkout()
+        saveState = .idle
         reset()
     }
 
