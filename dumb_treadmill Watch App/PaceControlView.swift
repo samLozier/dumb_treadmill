@@ -18,9 +18,9 @@ struct PaceControlView: View {
                 .focused($isFocused)
                 .digitalCrownRotation(
                     $pendingPace,
-                    from: 0.5,
-                    through: 12.0,
-                    by: 0.1,
+                    from: WorkoutConfig.paceMinMph,
+                    through: WorkoutConfig.paceMaxMph,
+                    by: WorkoutConfig.paceStepMph,
                     sensitivity: .low,
                     isContinuous: true,
                     isHapticFeedbackEnabled: true
@@ -46,6 +46,6 @@ struct PaceControlView: View {
             workoutManager.updatePace(paceMph: pace)
         }
         updateWorkItem = item
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.7, execute: item)
+        DispatchQueue.main.asyncAfter(deadline: .now() + WorkoutConfig.paceDebounceSeconds, execute: item)
     }
 }
