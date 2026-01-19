@@ -64,6 +64,7 @@ struct PreStartView: View {
                     workoutManager.startWorkout(pace: workoutManager.currentPaceMph)
                 }
                 .buttonStyle(.borderedProminent)
+                .accessibilityIdentifier("startWorkoutButton")
             }
         }
         .listStyle(.carousel)

@@ -15,6 +15,7 @@ struct PausedView: View {
                 Text("Workout Paused")
                     .font(.headline)
                     .frame(maxWidth: .infinity, alignment: .center)
+                    .accessibilityIdentifier("workoutPausedTitle")
 
                 Text("❤️ \(workoutManager.heartRate, specifier: "%.0f") bpm")
                     .lineLimit(1)

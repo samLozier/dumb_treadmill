@@ -18,7 +18,7 @@
 - Saving workout view should be transient and clear to next screen after save is confirmed.
 
 ## Project Cleanup & Standardization Checklist (Prioritized)
-1. [ ] Get testing working end‑to‑end (simulator runtime + reliable `xcodebuild test` run).
+1. [x] Get testing working end‑to‑end (simulator runtime + reliable `xcodebuild test` run).
 2. [ ] Centralize workout save state and transitions in `WorkoutManager` to avoid UI‑driven state resets or double transitions; `SavingWorkoutView` should be read‑only. (`dumb_treadmill Watch App/WorkoutManager.swift`, `dumb_treadmill Watch App/SavingWorkoutView.swift`)
 3. [ ] Clarify HealthKit save contract: either remove unused `distance`/`totalEnergyBurned` parameters in `endWorkout` or use them consistently (no mixed streaming + total samples). (`dumb_treadmill Watch App/HealthKitManager.swift`)
 4. [ ] Use real elapsed deltas for HealthKit sample timestamps rather than `now - 1` to avoid drift and mismatched totals. (`dumb_treadmill Watch App/WorkoutManager.swift`, `dumb_treadmill Watch App/TimerManager.swift`)

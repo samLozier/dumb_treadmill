@@ -13,6 +13,7 @@ struct DuringWorkoutView: View {
             Text("Workout in Progress")
                 .font(.headline)
                 .frame(maxWidth: .infinity, alignment: .center)
+                .accessibilityIdentifier("workoutInProgressTitle")
 
             Text("❤️ \(workoutManager.heartRate, specifier: "%.0f") bpm")
                 .lineLimit(1)
@@ -38,6 +39,7 @@ struct DuringWorkoutView: View {
                 Text("Pause")
             }
             .navigationBarBackButtonHidden(true)
+            .accessibilityIdentifier("pauseWorkoutButton")
         }
         .padding()
     }
