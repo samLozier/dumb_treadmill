@@ -3,7 +3,6 @@ import SwiftUI
 struct PreStartView: View {
     @EnvironmentObject var workoutManager: WorkoutManager
     @AppStorage("distanceUnit") private var distanceUnitRaw: String = DistanceUnit.miles.rawValue
-    @AppStorage("userWeightLbs") private var userWeightLbs: Double = 185.0
 
     private var distanceUnit: DistanceUnit {
         DistanceUnit(rawValue: distanceUnitRaw) ?? .miles
@@ -39,18 +38,6 @@ struct PreStartView: View {
                 }
                 .accessibilityIdentifier("unitsLink")
 
-                NavigationLink {
-                    WeightPickerView()
-                        .environmentObject(workoutManager)
-                } label: {
-                    HStack {
-                        Text("Weight")
-                        Spacer()
-                        Text("\(Int(userWeightLbs)) lb")
-                            .foregroundColor(.secondary)
-                    }
-                }
-                .accessibilityIdentifier("weightLink")
             }
 
             Section {
@@ -71,11 +58,5 @@ struct PreStartView: View {
             }
         }
         .listStyle(.carousel)
-        .onAppear {
-            workoutManager.userWeightLbs = userWeightLbs
-        }
-        .onChange(of: userWeightLbs) { _, newValue in
-            workoutManager.userWeightLbs = newValue
-        }
     }
 }
