@@ -49,12 +49,21 @@ struct PreStartView: View {
                 }
             }
 
+            if workoutManager.healthKitAvailable && !workoutManager.distanceWriteAuthorized {
+                Section {
+                    Text("Distance permission is off. Distance won’t be saved.")
+                        .font(.footnote)
+                        .foregroundColor(.orange)
+                }
+            }
+
             Section {
                 Button("Start") {
                     workoutManager.startWorkout(pace: workoutManager.currentPaceMph)
                 }
                 .buttonStyle(.borderedProminent)
                 .accessibilityIdentifier("startWorkoutButton")
+                .disabled(workoutManager.healthKitAvailable && !workoutManager.distanceWriteAuthorized)
             }
         }
         .listStyle(.carousel)

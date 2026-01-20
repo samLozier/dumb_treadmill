@@ -28,6 +28,7 @@ class WorkoutManager: ObservableObject {
     @Published var workoutState: WorkoutState = .idle
     @Published var saveState: SaveState = .idle
     @Published var healthKitAvailable: Bool = false
+    @Published var distanceWriteAuthorized: Bool = false
 
     @Published var finalStartDate: Date = Date()
     @Published var finalEndDate: Date = Date()
@@ -37,6 +38,9 @@ class WorkoutManager: ObservableObject {
     @Published var currentPaceMph: Double = 3.0
     @Published var segments: [WorkoutSegment] = []
     @Published var userWeightLbs: Double = 185.0
+    @Published var userHeightCm: Double?
+    @Published var userAgeYears: Int?
+    @Published var userBiologicalSex: HKBiologicalSex?
 
     private let healthKitManager = HealthKitManager()
     private let heartRateManager: HeartRateManager
@@ -52,6 +56,7 @@ class WorkoutManager: ObservableObject {
     private var lastRecordedEnergy: Double = 0
     private var lastSampleDate: Date?
     private var workoutStartDate: Date?
+    private var usesHealthKitEnergy = false
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -70,14 +75,57 @@ class WorkoutManager: ObservableObject {
 
         timerManager.$totalEnergyBurned
             .receive(on: RunLoop.main)
-            .assign(to: \.totalEnergyBurned, on: self)
+            .sink { [weak self] value in
+                guard let self else { return }
+                if !self.usesHealthKitEnergy {
+                    self.totalEnergyBurned = value
+                }
+            }
             .store(in: &cancellables)
 
-        timerManager.$elapsedTime
+        timerManager.$distance
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.recordSampleData()
             }
+            .store(in: &cancellables)
+
+        healthKitManager.$activeEnergyBurned
+            .receive(on: RunLoop.main)
+            .sink { [weak self] value in
+                guard let self else { return }
+                if self.usesHealthKitEnergy {
+                    self.totalEnergyBurned = value
+                }
+            }
+            .store(in: &cancellables)
+
+        healthKitManager.$isDistanceAuthorized
+            .receive(on: RunLoop.main)
+            .assign(to: \.distanceWriteAuthorized, on: self)
+            .store(in: &cancellables)
+
+        healthKitManager.$bodyMassKg
+            .receive(on: RunLoop.main)
+            .sink { [weak self] value in
+                guard let self, let value else { return }
+                self.userWeightLbs = value * 2.20462262
+            }
+            .store(in: &cancellables)
+
+        healthKitManager.$heightCm
+            .receive(on: RunLoop.main)
+            .assign(to: \.userHeightCm, on: self)
+            .store(in: &cancellables)
+
+        healthKitManager.$ageYears
+            .receive(on: RunLoop.main)
+            .assign(to: \.userAgeYears, on: self)
+            .store(in: &cancellables)
+
+        healthKitManager.$biologicalSex
+            .receive(on: RunLoop.main)
+            .assign(to: \.userBiologicalSex, on: self)
             .store(in: &cancellables)
     }
 
@@ -111,11 +159,19 @@ class WorkoutManager: ObservableObject {
     }
 
     func startWorkout(pace: Double) {
+        if healthKitAvailable && !distanceWriteAuthorized {
+            AppLog.workout.error("Distance write not authorized; blocking workout start.")
+            return
+        }
+
         let calculatedCalories = caloriesPerSecondForPace(pace)
         currentPaceMph = pace
         self.caloriesPerSecond = calculatedCalories
         workoutState = .active
         workoutStartDate = Date()
+        // Use locally computed calories to avoid HealthKit motion-derived energy.
+        usesHealthKitEnergy = false
+        totalEnergyBurned = 0
 
         healthKitManager.startWorkout()
         heartRateManager.startHeartRateQuery()
@@ -160,33 +216,19 @@ class WorkoutManager: ObservableObject {
         finalWorkout = nil
 
         finalizeCurrentSegment()
+        recordSampleData()
 
         timerManager.stop()
         heartRateManager.stopHeartRateQuery()
 
         let endDate = Date()
         let startDate = workoutStartDate ?? endDate.addingTimeInterval(-elapsedTime)
-        var didComplete = false
-
         self.finalStartDate = startDate
         self.finalEndDate = endDate
         self.finalDistance = distance
         self.finalEnergyBurned = totalEnergyBurned
 
-        let timeoutWorkItem = DispatchWorkItem {
-            if !didComplete {
-                AppLog.workout.error("Timeout: failed to save workout in time.")
-                self.saveState = .failed
-                onComplete()
-            }
-        }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 10, execute: timeoutWorkItem)
-
         healthKitManager.endWorkout(startDate: startDate, endDate: endDate) { workout in
-            didComplete = true
-            timeoutWorkItem.cancel()
-
             DispatchQueue.main.async {
                 self.finalWorkout = workout
                 if workout == nil {
@@ -215,6 +257,7 @@ class WorkoutManager: ObservableObject {
         segmentPaceMph = 0
         lastSampleDate = nil
         workoutStartDate = nil
+        usesHealthKitEnergy = false
     }
 
     func completeSaving() {
@@ -244,7 +287,24 @@ class WorkoutManager: ObservableObject {
 
         let met = metForTreadmillSpeed(paceMph)
         let weightKg = userWeightLbs * 0.45359237
-        let caloriesPerMinute = met * weightKg * 3.5 / 200.0
+        let caloriesPerMinute: Double
+
+        if let heightCm = userHeightCm, let ageYears = userAgeYears, let sex = userBiologicalSex {
+            let sexConstant: Double
+            switch sex {
+            case .male:
+                sexConstant = 5.0
+            case .female:
+                sexConstant = -161.0
+            default:
+                sexConstant = 0.0
+            }
+            let bmr = 10.0 * weightKg + 6.25 * heightCm - 5.0 * Double(ageYears) + sexConstant
+            caloriesPerMinute = met * (bmr / 1440.0)
+        } else {
+            caloriesPerMinute = met * weightKg * 3.5 / 200.0
+        }
+
         return caloriesPerMinute / 60.0
     }
 
@@ -361,21 +421,34 @@ class WorkoutManager: ObservableObject {
             return
         }
 
-        let deltaDistance = distance - lastRecordedDistance
-        let deltaEnergy = totalEnergyBurned - lastRecordedEnergy
+        let distanceType = HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning)!
+        let energyType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!
+        let canWriteDistance = healthKitManager.authorizationStatus(for: distanceType) == .sharingAuthorized
+        let canWriteEnergy = !usesHealthKitEnergy && healthKitManager.authorizationStatus(for: energyType) == .sharingAuthorized
+        let rawDeltaDistance = distance - lastRecordedDistance
+        let rawDeltaEnergy = totalEnergyBurned - lastRecordedEnergy
+        let deltaDistance = canWriteDistance ? rawDeltaDistance : 0
+        let deltaEnergy = canWriteEnergy ? rawDeltaEnergy : 0
 
         guard deltaDistance > 0 || deltaEnergy > 0 else {
             lastSampleDate = now
+            lastRecordedDistance = distance
+            lastRecordedEnergy = totalEnergyBurned
             return
         }
 
-        let distanceQuantity = HKQuantity(unit: .meter(), doubleValue: deltaDistance)
-        let energyQuantity = HKQuantity(unit: .kilocalorie(), doubleValue: deltaEnergy)
+        var samples: [HKSample] = []
+        if deltaDistance > 0 {
+            let distanceQuantity = HKQuantity(unit: .meter(), doubleValue: deltaDistance)
+            let distanceSample = HKQuantitySample(type: distanceType, quantity: distanceQuantity, start: startTime, end: now)
+            samples.append(distanceSample)
+        }
 
-        let distanceSample = HKQuantitySample(type: HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning)!, quantity: distanceQuantity, start: startTime, end: now)
-        let energySample = HKQuantitySample(type: HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!, quantity: energyQuantity, start: startTime, end: now)
-
-        var samples: [HKSample] = [distanceSample, energySample]
+        if deltaEnergy > 0 {
+            let energyQuantity = HKQuantity(unit: .kilocalorie(), doubleValue: deltaEnergy)
+            let energySample = HKQuantitySample(type: energyType, quantity: energyQuantity, start: startTime, end: now)
+            samples.append(energySample)
+        }
 
         if #available(watchOS 10.0, *) {
             let speedMetersPerSecond = currentPaceMph * 1609.344 / 3600.0
@@ -396,7 +469,9 @@ class WorkoutManager: ObservableObject {
             }
         }
 
-        healthKitManager.add(samples: samples)
+        if !samples.isEmpty {
+            healthKitManager.add(samples: samples)
+        }
 
         lastRecordedDistance = distance
         lastRecordedEnergy = totalEnergyBurned

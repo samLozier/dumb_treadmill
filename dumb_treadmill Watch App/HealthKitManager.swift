@@ -3,9 +3,16 @@ import Combine
 
 class HealthKitManager: NSObject, ObservableObject {
     private let healthStore = HKHealthStore()
-    private var workoutBuilder: HKWorkoutBuilder?
+    private var workoutBuilder: HKLiveWorkoutBuilder?
     private var workoutSession: HKWorkoutSession?
     @Published var isAuthorized = false
+    @Published var isDistanceAuthorized = false
+    @Published var isEnergyAuthorized = false
+    @Published var activeEnergyBurned: Double = 0
+    @Published var bodyMassKg: Double?
+    @Published var heightCm: Double?
+    @Published var ageYears: Int?
+    @Published var biologicalSex: HKBiologicalSex?
 
     // Request authorization to read and write HealthKit data
     func requestAuthorization(completion: @escaping (Bool) -> Void) {
@@ -20,9 +27,13 @@ class HealthKitManager: NSObject, ObservableObject {
         let distanceType = HKObjectType.quantityType(forIdentifier: .distanceWalkingRunning)!
         let energyType = HKObjectType.quantityType(forIdentifier: .activeEnergyBurned)!
         let effortType = HKObjectType.quantityType(forIdentifier: .workoutEffortScore)!
+        let bodyMassType = HKObjectType.quantityType(forIdentifier: .bodyMass)!
+        let heightType = HKObjectType.quantityType(forIdentifier: .height)!
+        let biologicalSexType = HKObjectType.characteristicType(forIdentifier: .biologicalSex)!
+        let dateOfBirthType = HKObjectType.characteristicType(forIdentifier: .dateOfBirth)!
 
         var typesToShare: Set = [workoutType, heartRateType, distanceType, energyType, effortType]
-        var typesToRead: Set = [workoutType, heartRateType, distanceType, energyType, effortType]
+        var typesToRead: Set = [workoutType, heartRateType, distanceType, energyType, effortType, bodyMassType, heightType, biologicalSexType, dateOfBirthType]
 
         if #available(watchOS 10.0, *) {
             let walkingSpeedType = HKObjectType.quantityType(forIdentifier: .walkingSpeed)!
@@ -44,13 +55,19 @@ class HealthKitManager: NSObject, ObservableObject {
 
                 let heartRateStatus = self.healthStore.authorizationStatus(for: heartRateType)
                 let workoutStatus = self.healthStore.authorizationStatus(for: workoutType)
+                let distanceStatus = self.healthStore.authorizationStatus(for: distanceType)
+                let energyStatus = self.healthStore.authorizationStatus(for: energyType)
 
                 let isHeartRateAuthorized = (heartRateStatus == .sharingAuthorized)
                 let isWorkoutAuthorized = (workoutStatus == .sharingAuthorized)
+                let isDistanceAuthorized = (distanceStatus == .sharingAuthorized)
+                let isEnergyAuthorized = (energyStatus == .sharingAuthorized)
 
                 self.isAuthorized = isHeartRateAuthorized && isWorkoutAuthorized
+                self.isDistanceAuthorized = isDistanceAuthorized
+                self.isEnergyAuthorized = isEnergyAuthorized
 
-                AppLog.healthKit.info("Authorization status — Heart Rate: \(heartRateStatus.rawValue), Workout: \(workoutStatus.rawValue)")
+                AppLog.healthKit.info("Authorization status — Heart Rate: \(heartRateStatus.rawValue), Workout: \(workoutStatus.rawValue), Distance: \(distanceStatus.rawValue), Energy: \(energyStatus.rawValue)")
 
                 if self.isAuthorized {
                     AppLog.healthKit.info("Authorization succeeded for all types.")
@@ -58,6 +75,7 @@ class HealthKitManager: NSObject, ObservableObject {
                     AppLog.healthKit.info("Authorization incomplete. HeartRate: \(isHeartRateAuthorized), Workout: \(isWorkoutAuthorized)")
                 }
 
+                self.refreshUserProfile()
                 completion(self.isAuthorized)
             }
         }
@@ -70,6 +88,8 @@ class HealthKitManager: NSObject, ObservableObject {
             return
         }
 
+        activeEnergyBurned = 0
+
         let workoutConfiguration = HKWorkoutConfiguration()
         workoutConfiguration.activityType = .walking
         workoutConfiguration.locationType = .indoor
@@ -78,7 +98,15 @@ class HealthKitManager: NSObject, ObservableObject {
             workoutSession = try HKWorkoutSession(healthStore: healthStore, configuration: workoutConfiguration)
             workoutSession?.delegate = self
 
-            workoutBuilder = HKWorkoutBuilder(healthStore: healthStore, configuration: workoutConfiguration, device: .local())
+            guard let builder = workoutSession?.associatedWorkoutBuilder() else {
+                AppLog.healthKit.error("Unable to create workout builder.")
+                return
+            }
+
+            workoutBuilder = builder
+            workoutBuilder?.delegate = self
+            // Use manual samples for treadmill distance; avoid motion-derived distance.
+            workoutBuilder?.dataSource = nil
 
             workoutSession?.startActivity(with: Date())
             workoutBuilder?.beginCollection(withStart: Date()) { (success, error) in
@@ -180,6 +208,71 @@ class HealthKitManager: NSObject, ObservableObject {
         workoutBuilder?.discardWorkout()
         workoutBuilder = nil
         workoutSession = nil
+        activeEnergyBurned = 0
+    }
+
+    func refreshUserProfile() {
+        guard HKHealthStore.isHealthDataAvailable() else {
+            return
+        }
+
+        readMostRecentQuantitySample(for: .bodyMass, unit: .gramUnit(with: .kilo)) { [weak self] value in
+            self?.bodyMassKg = value
+        }
+
+        readMostRecentQuantitySample(for: .height, unit: .meter()) { [weak self] value in
+            guard let value else {
+                self?.heightCm = nil
+                return
+            }
+            self?.heightCm = value * 100.0
+        }
+
+        do {
+            let birthDateComponents = try healthStore.dateOfBirthComponents()
+            if let birthYear = birthDateComponents.year {
+                let currentYear = Calendar.current.component(.year, from: Date())
+                let computedAge = max(0, currentYear - birthYear)
+                DispatchQueue.main.async {
+                    self.ageYears = computedAge
+                }
+            }
+        } catch {
+            AppLog.healthKit.info("Date of birth unavailable: \(error.localizedDescription)")
+        }
+
+        do {
+            let sex = try healthStore.biologicalSex()
+            DispatchQueue.main.async {
+                self.biologicalSex = sex.biologicalSex
+            }
+        } catch {
+            AppLog.healthKit.info("Biological sex unavailable: \(error.localizedDescription)")
+        }
+    }
+
+    private func readMostRecentQuantitySample(for identifier: HKQuantityTypeIdentifier, unit: HKUnit, completion: @escaping (Double?) -> Void) {
+        guard let quantityType = HKObjectType.quantityType(forIdentifier: identifier) else {
+            completion(nil)
+            return
+        }
+
+        let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierEndDate, ascending: false)
+        let query = HKSampleQuery(sampleType: quantityType, predicate: nil, limit: 1, sortDescriptors: [sortDescriptor], resultsHandler: { _, samples, _ in
+            guard let sample = samples?.first as? HKQuantitySample else {
+                DispatchQueue.main.async {
+                    completion(nil)
+                }
+                return
+            }
+
+            let value = sample.quantity.doubleValue(for: unit)
+            DispatchQueue.main.async {
+                completion(value)
+            }
+        })
+
+        healthStore.execute(query)
     }
 }
 
@@ -199,6 +292,26 @@ extension HealthKitManager: HKWorkoutSessionDelegate {
                 AppLog.healthKit.error("Add sample error: \(error.localizedDescription)")
             } else {
                 AppLog.healthKit.debug("Streaming samples added.")
+            }
+        }
+    }
+}
+
+// MARK: - HKLiveWorkoutBuilderDelegate
+extension HealthKitManager: HKLiveWorkoutBuilderDelegate {
+    func workoutBuilderDidCollectEvent(_ workoutBuilder: HKLiveWorkoutBuilder) { }
+
+    func workoutBuilder(_ workoutBuilder: HKLiveWorkoutBuilder, didCollectDataOf collectedTypes: Set<HKSampleType>) {
+        let energyType = HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!
+        guard collectedTypes.contains(energyType) else {
+            return
+        }
+
+        if let statistics = workoutBuilder.statistics(for: energyType),
+           let sum = statistics.sumQuantity() {
+            let calories = sum.doubleValue(for: .kilocalorie())
+            DispatchQueue.main.async {
+                self.activeEnergyBurned = calories
             }
         }
     }

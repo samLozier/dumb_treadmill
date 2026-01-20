@@ -64,7 +64,12 @@ struct SavingWorkoutView: View {
                     if workoutManager.canSaveWorkoutEffort {
                         VStack(spacing: 8) {
                             Button("Add Effort") {
-                                showEffortPrompt = true
+                                if showEffortPrompt {
+                                    showEffortPrompt = false
+                                }
+                                DispatchQueue.main.async {
+                                    showEffortPrompt = true
+                                }
                             }
                             .buttonStyle(.borderedProminent)
                             .accessibilityIdentifier("addEffortButton")
@@ -111,12 +116,6 @@ struct SavingWorkoutView: View {
         .onAppear {
             effort = max(1, min(lastEffort == 0 ? 5 : lastEffort, 10))
             showEffortPrompt = false
-        }
-        .onChange(of: workoutManager.saveState) { _, newValue in
-            guard newValue == .completed, workoutManager.canSaveWorkoutEffort else {
-                return
-            }
-            showEffortPrompt = true
         }
         .sheet(isPresented: $showEffortPrompt) {
             EffortPromptView(

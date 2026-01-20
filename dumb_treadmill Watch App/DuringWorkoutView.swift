@@ -15,6 +15,12 @@ struct DuringWorkoutView: View {
                 .frame(maxWidth: .infinity, alignment: .center)
                 .accessibilityIdentifier("workoutInProgressTitle")
 
+            if workoutManager.healthKitAvailable && !workoutManager.distanceWriteAuthorized {
+                Text("Distance permission is off. Distance won’t be saved.")
+                    .font(.footnote)
+                    .foregroundColor(.orange)
+            }
+
             WorkoutMetricsView(
                 heartRate: workoutManager.heartRate,
                 elapsedTime: workoutManager.elapsedTime,
